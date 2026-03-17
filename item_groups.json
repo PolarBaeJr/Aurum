@@ -1,0 +1,73 @@
+{
+  "d_assassin": [
+    "d_berserk",
+    "d_rapture",
+    "d_resusitaction",
+    "d_sapphire",
+    "d_spellbound_rapier",
+    "d_stormedge",
+    "d_windswept"
+  ],
+  "d_daggers": [
+    "d_sapphire",
+    "d_spellbound_rapier",
+    "d_stormedge"
+  ],
+  "d_mage": [
+    "d_archeaum",
+    "d_cassiopeia",
+    "d_conduit",
+    "d_focus",
+    "d_morning_dew",
+    "d_resusitaction",
+    "d_wayside"
+  ],
+  "d_reliks": [
+    "d_andromeda",
+    "d_blood_moon",
+    "d_rain_dance"
+  ],
+  "d_shaman": [
+    "d_andromeda",
+    "d_blood_moon",
+    "d_focus",
+    "d_grandpas_hat",
+    "d_paladins_garb",
+    "d_rain_dance",
+    "d_reconcilliation"
+  ],
+  "d_spears": [
+    "d_arondight",
+    "d_last_grasp",
+    "d_oathkeeper"
+  ],
+  "d_wands": [
+    "d_archeaum",
+    "d_cassiopeia",
+    "d_morning_dew"
+  ],
+  "d_warrior": [
+    "d_arondight",
+    "d_border",
+    "d_last_grasp",
+    "d_oathkeeper",
+    "d_placeholder",
+    "d_reputation",
+    "d_vigor"
+  ],
+  "m_exca_gear": [
+    "m_exca_health_potion",
+    "m_exca_shovel",
+    "m_exca_sword"
+  ],
+  "m_nether": [
+    "m_nether_1",
+    "m_nether_2",
+    "m_nether_3",
+    "m_nether_4",
+    "m_nether_5",
+    "m_nether_6",
+    "m_nether_7",
+    "m_nether_8"
+  ]
+}

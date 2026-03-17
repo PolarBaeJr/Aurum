@@ -1,0 +1,5 @@
+
+# Claude Code Conductor (C3) — generated state, not source code
+.conductor/
+.codex-reviews/
+.codex/

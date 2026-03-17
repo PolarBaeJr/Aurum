@@ -1,0 +1,15 @@
+name: Aurum
+version: '1.0.0'
+main: goldenshadow.aurum.Aurum
+api-version: '1.21'
+authors: [ _GoldenShadow ]
+description: Adds features for an mmo
+commands:
+  aurum:
+    description: An all in one command for Aurum features
+    permission: Aurum.admin
+  suicide:
+    description: Kills the player
+  open_door:
+    description: Used to open a dungeon door at give coordinates
+    permission: Aurum.admin

@@ -1,0 +1,13 @@
+Critical-hits: false
+Thunder-damage: true
+Bank: true
+ExperienceSystem: false
+RespawnSystem: false
+kill-command: false
+deny-blocks: false
+xp-multiplier: 1
+advertisement: false
+passive-regen: false
+custom-fishing: true
+pvp: false
+deny-openable: false

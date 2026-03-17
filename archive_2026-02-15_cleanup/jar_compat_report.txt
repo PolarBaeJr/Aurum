@@ -1,0 +1,38 @@
+jar=Aurum-1.0.0.jar
+plugin_yml:
+  name: Aurum
+  version: '1.0.0'
+  main: goldenshadow.aurum.Aurum
+  api-version: '1.21'
+  authors: [ _GoldenShadow ]
+  description: Adds features for an mmo
+  commands:
+    aurum:
+      description: An all in one command for Aurum features
+      permission: Aurum.admin
+    suicide:
+      description: Kills the player
+    open_door:
+      description: Used to open a dungeon door at give coordinates
+      permission: Aurum.admin
+
+embedded_pom_spigot_dependency:
+  59:                            <srgIn>org.spigotmc:minecraft-server:1.20.1-R0.1-SNAPSHOT:txt:maps-mojang</srgIn>
+  61:                            <remappedDependencies>org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT:jar:remapped-mojang</remappedDependencies>
+  74:                            <srgIn>org.spigotmc:minecraft-server:1.20.1-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
+  136:            <artifactId>spigot</artifactId>
+  137:            <version>1.20.1-R0.1-SNAPSHOT</version>
+  138:            <classifier>remapped-mojang</classifier>
+
+hardcoded_craftbukkit_refs:
+    #592 = Utf8               org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity
+    #593 = Class              #592          // org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity
+    #597 = Methodref          #593.#596     // org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity.getHandle:()Lnet/minecraft/world/entity/Entity;
+        1325: checkcast     #593                // class org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity
+        1328: invokevirtual #597                // Method org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity.getHandle:()Lnet/minecraft/world/entity/Entity;
+    #119 = Utf8               org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity
+    #120 = Class              #119          // org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity
+    #124 = Methodref          #120.#123     // org/bukkit/craftbukkit/v1_20_R1/entity/CraftEntity.getHandle:()Lnet/minecraft/world/entity/Entity;
+    #129 = Utf8               org/bukkit/craftbukkit/v1_20_R1/entity/CraftPlayer
+    #130 = Class              #129          // org/bukkit/craftbukkit/v1_20_R1/entity/CraftPlayer
+    #133 = Methodref          #130.#132     // org/bukkit/craftbukkit/v1_20_R1/entity/CraftPlayer.getHandle:()Lnet/minecraft/server/level/EntityPlayer;

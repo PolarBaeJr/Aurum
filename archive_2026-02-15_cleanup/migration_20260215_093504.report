@@ -1,0 +1,10 @@
+stamp=migration_20260215_093504
+spawn_diagnostics_logs=4
+item_keys=79
+group_keys=10
+mob_keys=267
+spawn_nodes=1968
+respawn_nodes=82
+bank_entries=60
+spawn_worlds=WynnRipoff,dungeons,minigames2
+respawn_worlds=WynnRipoff,dungeons
