@@ -1,8 +1,7 @@
 /*
  * Decompiled with CFR 0.152.
- * 
+ *
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.command.BlockCommandSender
  *  org.bukkit.command.Command
@@ -18,7 +17,8 @@ import goldenshadow.aurum.Aurum;
 import goldenshadow.aurum.command.CommandHelper;
 import goldenshadow.aurum.other.Door;
 import goldenshadow.aurum.other.DoorHandler;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
@@ -45,12 +45,12 @@ implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage("[Aurum] Error: Command must be run by player!");
+                sender.sendMessage(Component.text("[Aurum] Error: Command must be run by player!"));
                 return true;
             }
             Player player = (Player)sender;
             if (!player.isOp()) {
-                sender.sendMessage(ChatColor.RED + "[Aurum] Error: You do not have permission to run this command!");
+                sender.sendMessage(Component.text("[Aurum] Error: You do not have permission to run this command!", NamedTextColor.RED));
                 return true;
             }
             if (args[0].equalsIgnoreCase("edit_item")) {
@@ -89,7 +89,7 @@ implements CommandExecutor {
                 this.commandHelper.itemSubCommand(args, player);
                 return true;
             }
-            player.sendMessage(ChatColor.RED + "[Aurum] Error: Invalid syntax!");
+            player.sendMessage(Component.text("[Aurum] Error: Invalid syntax!", NamedTextColor.RED));
             return true;
         }
         if (label.equalsIgnoreCase("suicide")) {
@@ -99,10 +99,10 @@ implements CommandExecutor {
                     player.setHealth(0.0);
                     return true;
                 }
-                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "!" + ChatColor.DARK_RED + "] " + ChatColor.GRAY + "You cannot run this command at the moment...");
+                player.sendMessage(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text("You cannot run this command at the moment...", NamedTextColor.GRAY)));
                 return true;
             }
-            sender.sendMessage("[Aurum] This command must be run by a player!");
+            sender.sendMessage(Component.text("[Aurum] This command must be run by a player!"));
             return true;
         }
         if (label.equalsIgnoreCase("open_door") && args.length == 3) {
@@ -113,7 +113,7 @@ implements CommandExecutor {
                 }
                 if (sender instanceof Player) {
                     loc = new Location(((Player)sender).getWorld(), Double.parseDouble(args[0]), Double.parseDouble(args[1]), Double.parseDouble(args[2]));
-                    sender.sendMessage(ChatColor.GOLD + "[Aurum] " + ChatColor.YELLOW + "Opening door!");
+                    sender.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Opening door!", NamedTextColor.YELLOW)));
                 }
                 if (loc != null) {
                     assert (loc.getWorld() != null);
@@ -129,7 +129,7 @@ implements CommandExecutor {
                 }
                 return true;
             }
-            sender.sendMessage("Invalid arguments! Usage: /open_door <x> <y> <z>");
+            sender.sendMessage(Component.text("Invalid arguments! Usage: /open_door <x> <y> <z>"));
             return true;
         }
         return false;
