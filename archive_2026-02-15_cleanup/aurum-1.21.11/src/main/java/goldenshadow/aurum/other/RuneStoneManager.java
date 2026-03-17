@@ -23,10 +23,13 @@ import goldenshadow.aurum.other.ExperienceManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -39,137 +42,137 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class RuneStoneManager {
     public static Inventory createGUI(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, (int)9, (String)(ChatColor.BOLD + "Rune Stone"));
+        Inventory inventory = Bukkit.createInventory(null, (int)9, Component.text("Rune Stone", NamedTextColor.WHITE).decorate(TextDecoration.BOLD));
         int playerLevel = ExperienceManager.getLevel(player);
         ItemStack item = new ItemStack(Material.ENDER_PEARL);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         for (int i = 0; i < 9; ++i) {
             if (i == 0 || i == 8) {
                 inventory.setItem(i, RuneStoneManager.fillerElement());
             }
             if (i == 1) {
-                meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Esper");
-                lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-                lore.add("");
+                meta.displayName(Component.text("Esper", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+                lore.add(Component.text(""));
                 if (playerLevel >= 5) {
                     item.setType(Material.ENDER_EYE);
-                    lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 5");
+                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 5", NamedTextColor.GRAY)));
                 } else {
-                    lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 5");
+                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 5", NamedTextColor.GRAY)));
                 }
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Cost: 1 Silver Coin");
-                meta.setLore(lore);
+                lore.add(Component.text(""));
+                lore.add(Component.text("Cost: 1 Silver Coin", NamedTextColor.AQUA));
+                meta.lore(lore);
                 item.setItemMeta(meta);
                 inventory.setItem(i, item);
                 item.setType(Material.ENDER_PEARL);
                 lore.clear();
             }
             if (i == 2) {
-                meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Arbidel");
-                lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-                lore.add("");
+                meta.displayName(Component.text("Arbidel", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+                lore.add(Component.text(""));
                 if (playerLevel >= 35) {
                     item.setType(Material.ENDER_EYE);
-                    lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 35");
+                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 35", NamedTextColor.GRAY)));
                 } else {
-                    lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 35");
+                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 35", NamedTextColor.GRAY)));
                 }
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Cost: 2 Silvers Coin");
-                meta.setLore(lore);
+                lore.add(Component.text(""));
+                lore.add(Component.text("Cost: 2 Silvers Coin", NamedTextColor.AQUA));
+                meta.lore(lore);
                 item.setItemMeta(meta);
                 inventory.setItem(i, item);
                 item.setType(Material.ENDER_PEARL);
                 lore.clear();
             }
             if (i == 3) {
-                meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Runesmith Tower");
-                lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-                lore.add("");
+                meta.displayName(Component.text("Runesmith Tower", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+                lore.add(Component.text(""));
                 if (playerLevel >= 45) {
                     item.setType(Material.ENDER_EYE);
-                    lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 45");
+                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 45", NamedTextColor.GRAY)));
                 } else {
-                    lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 45");
+                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 45", NamedTextColor.GRAY)));
                 }
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Cost: 4 Silver Coins");
-                meta.setLore(lore);
+                lore.add(Component.text(""));
+                lore.add(Component.text("Cost: 4 Silver Coins", NamedTextColor.AQUA));
+                meta.lore(lore);
                 item.setItemMeta(meta);
                 inventory.setItem(i, item);
                 item.setType(Material.ENDER_PEARL);
                 lore.clear();
             }
             if (i == 4) {
-                meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Hearth");
-                lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-                lore.add("");
+                meta.displayName(Component.text("Hearth", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+                lore.add(Component.text(""));
                 if (playerLevel >= 60) {
                     item.setType(Material.ENDER_EYE);
-                    lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 60");
+                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 60", NamedTextColor.GRAY)));
                 } else {
-                    lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 60");
+                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 60", NamedTextColor.GRAY)));
                 }
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Cost: 6 Silver Coins");
-                meta.setLore(lore);
+                lore.add(Component.text(""));
+                lore.add(Component.text("Cost: 6 Silver Coins", NamedTextColor.AQUA));
+                meta.lore(lore);
                 item.setItemMeta(meta);
                 inventory.setItem(i, item);
                 item.setType(Material.ENDER_PEARL);
                 lore.clear();
             }
             if (i == 5) {
-                meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Scavenger Camp");
-                lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-                lore.add("");
+                meta.displayName(Component.text("Scavenger Camp", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+                lore.add(Component.text(""));
                 if (playerLevel >= 75) {
                     item.setType(Material.ENDER_EYE);
-                    lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 75");
+                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 75", NamedTextColor.GRAY)));
                 } else {
-                    lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 75");
+                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 75", NamedTextColor.GRAY)));
                 }
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Cost: 10 Silver Coins");
-                meta.setLore(lore);
+                lore.add(Component.text(""));
+                lore.add(Component.text("Cost: 10 Silver Coins", NamedTextColor.AQUA));
+                meta.lore(lore);
                 item.setItemMeta(meta);
                 inventory.setItem(i, item);
                 item.setType(Material.ENDER_PEARL);
                 lore.clear();
             }
             if (i == 6) {
-                meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Waya's Antiques and Oddities");
-                lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-                lore.add("");
+                meta.displayName(Component.text("Waya's Antiques and Oddities", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+                lore.add(Component.text(""));
                 if (playerLevel >= 82) {
                     item.setType(Material.ENDER_EYE);
-                    lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 82");
+                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 82", NamedTextColor.GRAY)));
                 } else {
-                    lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 82");
+                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 82", NamedTextColor.GRAY)));
                 }
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Cost: 12 Silver Coins");
-                meta.setLore(lore);
+                lore.add(Component.text(""));
+                lore.add(Component.text("Cost: 12 Silver Coins", NamedTextColor.AQUA));
+                meta.lore(lore);
                 item.setItemMeta(meta);
                 inventory.setItem(i, item);
                 item.setType(Material.ENDER_PEARL);
                 lore.clear();
             }
             if (i != 7) continue;
-            meta.setDisplayName(ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Venir");
-            lore.add(ChatColor.DARK_GRAY + "Click to teleport");
-            lore.add("");
+            meta.displayName(Component.text("Venir", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+            lore.add(Component.text(""));
             if (playerLevel >= 90) {
                 item.setType(Material.ENDER_EYE);
-                lore.add(ChatColor.GREEN + "\u2714 " + ChatColor.GRAY + "Level Req: 90");
+                lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 90", NamedTextColor.GRAY)));
             } else {
-                lore.add(ChatColor.RED + "\u2716 " + ChatColor.GRAY + "Level Req: 90");
+                lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 90", NamedTextColor.GRAY)));
             }
-            lore.add("");
-            lore.add(ChatColor.AQUA + "Cost: 16 Silver Coins");
-            meta.setLore(lore);
+            lore.add(Component.text(""));
+            lore.add(Component.text("Cost: 16 Silver Coins", NamedTextColor.AQUA));
+            meta.lore(lore);
             item.setItemMeta(meta);
             inventory.setItem(i, item);
             item.setType(Material.ENDER_PEARL);
@@ -218,19 +221,20 @@ public class RuneStoneManager {
             event.setCancelled(true);
             if (event.getCurrentItem() != null) {
                 if (event.getCurrentItem().getType() == Material.ENDER_PEARL) {
-                    player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "!" + ChatColor.DARK_RED + "] " + ChatColor.GRAY + "You are not high enough level to travel to that location!");
+                    player.sendMessage(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text("You are not high enough level to travel to that location!", NamedTextColor.GRAY)));
                     player.playSound((Entity)player, Sound.ENTITY_CAT_HISS, 1.0f, 1.0f);
                     return;
                 }
                 if (event.getCurrentItem().getType() == Material.ENDER_EYE) {
                     assert (event.getCurrentItem().getItemMeta() != null);
-                    int cost = RuneStoneManager.getCostFromName(event.getCurrentItem().getItemMeta().getDisplayName());
+                    String displayName = PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().getItemMeta().displayName());
+                    int cost = RuneStoneManager.getCostFromName(displayName);
                     if (RuneStoneManager.hasEnoughCoins(player, cost)) {
                         RuneStoneManager.removeCoins(player, cost);
                         player.teleport(RuneStoneManager.getLocationByCost(cost));
                         player.playSound((Entity)player, Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1.0f, 1.0f);
                     } else {
-                        player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "!" + ChatColor.DARK_RED + "] " + ChatColor.GRAY + "You don't have enough silver coins to travel to that location");
+                        player.sendMessage(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text("You don't have enough silver coins to travel to that location", NamedTextColor.GRAY)));
                         player.playSound((Entity)player, Sound.ENTITY_CAT_HISS, 1.0f, 1.0f);
                     }
                 }
@@ -242,7 +246,7 @@ public class RuneStoneManager {
         ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = itemStack.getItemMeta();
         assert (meta != null);
-        meta.setDisplayName(" ");
+        meta.displayName(Component.text(" "));
         itemStack.setItemMeta(meta);
         return itemStack;
     }

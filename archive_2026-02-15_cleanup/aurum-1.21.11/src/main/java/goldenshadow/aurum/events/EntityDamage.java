@@ -20,7 +20,8 @@ import goldenshadow.aurum.other.TrainingDummy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -55,7 +56,7 @@ implements Listener {
             EntityHandler.damage(damageByEntityEvent);
             entity2 = damageByEntityEvent.getDamager();
             if (entity2 instanceof Player && (player = (Player)entity2).getScoreboardTags().contains("aurum_debug_damage")) {
-                player.sendMessage(ChatColor.DARK_AQUA + "[Aurum] Debug: Damage dealt: " + damageByEntityEvent.getFinalDamage());
+                player.sendMessage(Component.text("[Aurum] Debug: Damage dealt: " + damageByEntityEvent.getFinalDamage(), NamedTextColor.DARK_AQUA));
             }
         }
         if (event.getEntity() instanceof Player) {

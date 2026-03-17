@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
@@ -134,7 +135,7 @@ public class Door {
         }
         if (this.decay_tick > 3600) {
             if (this.displayEntity != null) {
-                this.displayEntity.setCustomName(ChatColor.GRAY + "Get " + ChatColor.YELLOW + "[0/" + this.requiredTokens + " Tokens]");
+                this.displayEntity.customName(Component.text("Get ", NamedTextColor.GRAY).append(Component.text("[0/" + this.requiredTokens + " Tokens]", NamedTextColor.YELLOW)));
             }
             DoorHandler.removeActiveDoor(this);
         }
@@ -145,7 +146,7 @@ public class Door {
             this.rootEntity.getLocation().getWorld().getNearbyEntities(this.rootEntity.getLocation(), 20.0, 20.0, 20.0).forEach(x -> {
                 if (x instanceof Player) {
                     Player p = (Player)x;
-                    p.sendMessage(ChatColor.GOLD + "[" + ChatColor.YELLOW + "!" + ChatColor.GOLD + "] " + ChatColor.GRAY + "Opening!");
+                    p.sendMessage(Component.text("[", NamedTextColor.GOLD).append(Component.text("!", NamedTextColor.YELLOW)).append(Component.text("] ", NamedTextColor.GOLD)).append(Component.text("Opening!", NamedTextColor.GRAY)));
                     if (this.isMiniBossDoor) {
                         DoorHandler.clearTokens(p);
                         DoorHandler.clearMiniBossTokens(p);
@@ -197,7 +198,7 @@ public class Door {
                 Bukkit.getServer().dispatchCommand((CommandSender)Bukkit.getConsoleSender(), this.close_command);
             }
             if (this.displayEntity != null) {
-                this.displayEntity.setCustomName(ChatColor.GRAY + "Get " + ChatColor.YELLOW + "[0/" + this.requiredTokens + " Tokens]");
+                this.displayEntity.customName(Component.text("Get ", NamedTextColor.GRAY).append(Component.text("[0/" + this.requiredTokens + " Tokens]", NamedTextColor.YELLOW)));
             }
             DoorHandler.removeActiveDoor(this);
         }
@@ -206,7 +207,7 @@ public class Door {
     public void addTokens(int amount) {
         this.currentTokens += amount;
         if (this.displayEntity != null) {
-            this.displayEntity.setCustomName(ChatColor.GRAY + "Get " + ChatColor.YELLOW + "[" + Math.min(this.currentTokens, this.requiredTokens) + "/" + this.requiredTokens + " Tokens]");
+            this.displayEntity.customName(Component.text("Get ", NamedTextColor.GRAY).append(Component.text("[" + Math.min(this.currentTokens, this.requiredTokens) + "/" + this.requiredTokens + " Tokens]", NamedTextColor.YELLOW)));
         }
         this.decay_tick = 0;
     }

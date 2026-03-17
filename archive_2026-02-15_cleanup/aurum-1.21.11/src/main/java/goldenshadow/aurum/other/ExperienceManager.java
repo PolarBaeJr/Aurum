@@ -18,10 +18,12 @@ import goldenshadow.aurum.Aurum;
 import goldenshadow.aurum.items.ItemHelper;
 import goldenshadow.aurum.items.flags.AttributeID;
 import java.util.Objects;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -114,7 +116,7 @@ public class ExperienceManager {
     }
 
     private static void levelUp(Player player, int newLevel) {
-        player.sendMessage(ChatColor.GOLD + "[" + ChatColor.YELLOW + "!" + ChatColor.GOLD + "] " + ChatColor.GREEN + ChatColor.BOLD + "Level Up!     " + ChatColor.RESET + ChatColor.GRAY + (newLevel - 1) + " -> " + newLevel);
+        player.sendMessage(Component.text("[", NamedTextColor.GOLD).append(Component.text("!", NamedTextColor.YELLOW)).append(Component.text("] ", NamedTextColor.GOLD)).append(Component.text("Level Up!     ", NamedTextColor.GREEN, TextDecoration.BOLD)).append(Component.text((newLevel - 1) + " -> " + newLevel, NamedTextColor.GRAY)));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
         player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).getValue());
     }

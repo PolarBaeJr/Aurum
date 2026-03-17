@@ -18,11 +18,10 @@ import goldenshadow.aurum.Aurum;
 import goldenshadow.aurum.items.BankManager;
 import goldenshadow.aurum.other.ExperienceManager;
 import java.util.concurrent.ThreadLocalRandom;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -33,9 +32,9 @@ implements Listener {
     public void event(PlayerJoinEvent event) {
         if (Aurum.getPlugin().getConfig().getBoolean("advertisement")) {
             if (ThreadLocalRandom.current().nextBoolean()) {
-                event.getPlayer().spigot().sendMessage(PlayerJoin.getAdvertisementMessage());
+                event.getPlayer().sendMessage(PlayerJoin.getAdvertisementMessage());
             } else {
-                event.getPlayer().spigot().sendMessage(PlayerJoin.getInfoMessage());
+                event.getPlayer().sendMessage(PlayerJoin.getInfoMessage());
             }
         }
         if (Aurum.getPlugin().getConfig().getBoolean("ExperienceSystem")) {
@@ -44,16 +43,28 @@ implements Listener {
         BankManager.join(event.getPlayer());
     }
 
-    public static BaseComponent[] getAdvertisementMessage() {
-        TextComponent click = new TextComponent("[here]");
-        click.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/njRpZwKVaa"));
-        return new ComponentBuilder("------------------------------\n").color(ChatColor.AQUA).append("    TAq 3rd Anniversary\n\n").bold(true).color(ChatColor.GOLD).append(" Join our discord ").bold(false).color(ChatColor.YELLOW).append((BaseComponent)click).append(" to hang\n").append("     out with us in event hall!\n\n").append("------------------------------").color(ChatColor.AQUA).create();
+    public static Component getAdvertisementMessage() {
+        Component click = Component.text("[here]", NamedTextColor.YELLOW)
+            .clickEvent(ClickEvent.openUrl("https://discord.gg/njRpZwKVaa"));
+        return Component.text("------------------------------\n", NamedTextColor.AQUA)
+            .append(Component.text("    TAq 3rd Anniversary\n\n", NamedTextColor.GOLD, TextDecoration.BOLD))
+            .append(Component.text(" Join our discord ", NamedTextColor.YELLOW))
+            .append(click)
+            .append(Component.text(" to hang\n", NamedTextColor.YELLOW))
+            .append(Component.text("     out with us in event hall!\n\n", NamedTextColor.YELLOW))
+            .append(Component.text("------------------------------", NamedTextColor.AQUA));
     }
 
-    public static BaseComponent[] getInfoMessage() {
-        TextComponent click = new TextComponent("[here]");
-        click.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://docs.google.com/document/d/1RXn68pv6mgQt4kWJRPcL0gqlCkc0LXArSIPXBhWpIPg/edit?usp=sharing"));
-        return new ComponentBuilder("------------------------------\n").color(ChatColor.AQUA).append("    TAq 3rd Anniversary\n\n").bold(true).color(ChatColor.GOLD).append(" Read up on important information\n").bold(false).color(ChatColor.YELLOW).append("      about the event ").append((BaseComponent)click).append("\n\n").append("------------------------------").color(ChatColor.AQUA).create();
+    public static Component getInfoMessage() {
+        Component click = Component.text("[here]", NamedTextColor.YELLOW)
+            .clickEvent(ClickEvent.openUrl("https://docs.google.com/document/d/1RXn68pv6mgQt4kWJRPcL0gqlCkc0LXArSIPXBhWpIPg/edit?usp=sharing"));
+        return Component.text("------------------------------\n", NamedTextColor.AQUA)
+            .append(Component.text("    TAq 3rd Anniversary\n\n", NamedTextColor.GOLD, TextDecoration.BOLD))
+            .append(Component.text(" Read up on important information\n", NamedTextColor.YELLOW))
+            .append(Component.text("      about the event ", NamedTextColor.YELLOW))
+            .append(click)
+            .append(Component.text("\n\n", NamedTextColor.YELLOW))
+            .append(Component.text("------------------------------", NamedTextColor.AQUA));
     }
 }
 

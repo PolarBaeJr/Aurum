@@ -8,10 +8,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Skeleton;
@@ -27,7 +28,7 @@ public class TrainingDummy {
         ArmorStand name = (ArmorStand)location.getWorld().spawnEntity(location.add(0.0, 2.3, 0.0), EntityType.ARMOR_STAND);
         name.setInvisible(true);
         name.setMarker(true);
-        name.setCustomName(ChatColor.YELLOW + "Training Dummy");
+        name.customName(Component.text("Training Dummy", NamedTextColor.YELLOW));
         name.setCustomNameVisible(true);
         name.addScoreboardTag("aurum_training_dummy");
         dummy.setAI(false);
@@ -35,7 +36,7 @@ public class TrainingDummy {
         dummy.addScoreboardTag("aurum_mob");
         Objects.requireNonNull(dummy.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(10000.0);
         dummy.setHealth(10000.0);
-        dummy.setCustomName(ChatColor.GRAY + "0 Damage");
+        dummy.customName(Component.text("0 Damage", NamedTextColor.GRAY));
         dummy.setCustomNameVisible(true);
         dummy.setRemoveWhenFarAway(false);
         assert (dummy.getEquipment() != null);
@@ -48,9 +49,9 @@ public class TrainingDummy {
             taskIds.get(s.getUniqueId()).forEach(x -> Bukkit.getScheduler().cancelTask(x.intValue()));
             taskIds.remove(s.getUniqueId());
         }
-        s.setCustomName(ChatColor.GRAY + Integer.toString((int)damage) + " Damage");
+        s.customName(Component.text((int)damage + " Damage", NamedTextColor.GRAY));
         s.setHealth(10000.0);
-        int id = Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)Aurum.getPlugin(), () -> s.setCustomName(ChatColor.GRAY + "0 Damage"), 40L);
+        int id = Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)Aurum.getPlugin(), () -> s.customName(Component.text("0 Damage", NamedTextColor.GRAY)), 40L);
         if (taskIds.containsKey(s.getUniqueId())) {
             taskIds.get(s.getUniqueId()).add(id);
         } else {

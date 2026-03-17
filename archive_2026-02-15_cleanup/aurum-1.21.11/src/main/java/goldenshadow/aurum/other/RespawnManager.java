@@ -12,16 +12,17 @@ import goldenshadow.aurum.entities.DataManager;
 import goldenshadow.aurum.other.ExperienceManager;
 import goldenshadow.aurum.other.RespawnLocation;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class RespawnManager {
     public static void playerDeath(Player player) {
         int xp = ExperienceManager.getXP(player);
         double deduction = (double)xp * 0.1;
         ExperienceManager.removeXp(player, (int)Math.round(deduction));
-        player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "!" + ChatColor.DARK_RED + "] " + ChatColor.GRAY + "You died...");
-        player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "!" + ChatColor.DARK_RED + "] " + ChatColor.GRAY + "-" + (int)Math.round(deduction) + " XP");
+        player.sendMessage(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text("You died...", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text("-" + (int)Math.round(deduction) + " XP", NamedTextColor.GRAY)));
     }
 
     public static void respawnNodeLoop() {

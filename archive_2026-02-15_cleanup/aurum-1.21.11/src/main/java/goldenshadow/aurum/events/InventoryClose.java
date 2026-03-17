@@ -12,6 +12,7 @@ package goldenshadow.aurum.events;
 import goldenshadow.aurum.items.BankManager;
 import goldenshadow.aurum.items.ItemBuyer;
 import goldenshadow.aurum.items.RuneSmith;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +22,10 @@ public class InventoryClose
 implements Listener {
     @EventHandler
     public void event(InventoryCloseEvent event) {
-        if (RuneSmith.isRuneSmithGUI(event.getPlayer().getOpenInventory().getTitle())) {
+        if (RuneSmith.isRuneSmithGUI(PlainTextComponentSerializer.plainText().serialize(event.getPlayer().getOpenInventory().title()))) {
             RuneSmith.invExit((Player)event.getPlayer());
         }
-        if (ItemBuyer.isItemBuyerGUI(event.getPlayer().getOpenInventory().getTitle())) {
+        if (ItemBuyer.isItemBuyerGUI(PlainTextComponentSerializer.plainText().serialize(event.getPlayer().getOpenInventory().title()))) {
             ItemBuyer.invExit((Player)event.getPlayer());
         }
         BankManager.closed(event);

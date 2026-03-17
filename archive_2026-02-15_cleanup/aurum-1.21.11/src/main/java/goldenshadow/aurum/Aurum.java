@@ -131,9 +131,9 @@ extends JavaPlugin {
             public void run() {
                 if (Aurum.this.getConfig().getBoolean("advertisement")) {
                     if (ThreadLocalRandom.current().nextBoolean()) {
-                        Bukkit.spigot().broadcast(PlayerJoin.getAdvertisementMessage());
+                        Bukkit.broadcast(PlayerJoin.getAdvertisementMessage());
                     } else {
-                        Bukkit.spigot().broadcast(PlayerJoin.getInfoMessage());
+                        Bukkit.broadcast(PlayerJoin.getInfoMessage());
                     }
                 }
             }

@@ -14,7 +14,7 @@ import goldenshadow.aurum.items.ItemBuyer;
 import goldenshadow.aurum.items.RuneAbilityHandler;
 import goldenshadow.aurum.items.RuneSmith;
 import goldenshadow.aurum.other.RuneStoneManager;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,8 +24,8 @@ public class InventoryClick
 implements Listener {
     @EventHandler
     public void event(InventoryClickEvent event) {
-        String title = event.getWhoClicked().getOpenInventory().getTitle();
-        if (title.equals(ChatColor.BOLD + "Rune Stone")) {
+        String title = PlainTextComponentSerializer.plainText().serialize(event.getWhoClicked().getOpenInventory().title());
+        if (title.equals("Rune Stone")) {
             RuneStoneManager.inventoryClick(event);
         }
         if (RuneSmith.isRuneSmithGUI(title)) {
