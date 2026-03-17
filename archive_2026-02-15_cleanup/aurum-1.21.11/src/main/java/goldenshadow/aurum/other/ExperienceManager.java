@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Sound
  *  org.bukkit.attribute.Attribute

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class DiagnosticLogger {
-    private static final LinkedList<String> log = new LinkedList();
+    private static final LinkedList<String> log = new LinkedList<>();
     private static final int limit = 10000;
 
     public static void add(String item) {

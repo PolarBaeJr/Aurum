@@ -26,8 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class PlayerSpellManager {
-    private static final ArrayList<PlayerSpell> activeSpells = new ArrayList();
-    private static final ArrayList<UUID> toRemove = new ArrayList();
+    private static final ArrayList<PlayerSpell> activeSpells = new ArrayList<>();
+    private static final ArrayList<UUID> toRemove = new ArrayList<>();
     static final ItemHelper itemHelper = new ItemHelper();
 
     public static void cast(PlayerSpell spell) {

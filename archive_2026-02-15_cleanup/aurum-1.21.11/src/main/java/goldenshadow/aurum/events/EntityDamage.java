@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.entity.Entity
  *  org.bukkit.entity.Player
  *  org.bukkit.entity.Skeleton

@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
 
 public class Watched
 extends Spell {
-    ArrayList<EnderCrystal> crystals = new ArrayList();
+    ArrayList<EnderCrystal> crystals = new ArrayList<>();
 
     public Watched(LivingEntity entity) {
         super(entity);

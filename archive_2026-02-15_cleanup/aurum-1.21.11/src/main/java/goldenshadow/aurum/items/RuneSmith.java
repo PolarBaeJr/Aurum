@@ -43,32 +43,34 @@ import org.bukkit.persistence.PersistentDataType;
 public class RuneSmith {
     public static Inventory createRuneSmithGUI(Player player) {
         Inventory inv = Bukkit.createInventory((InventoryHolder)player, 27, Component.text("       ", NamedTextColor.LIGHT_PURPLE).append(Component.text("H", NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.OBFUSCATED)).append(Component.text(" Rune Smith Table ", NamedTextColor.DARK_PURPLE).decorate(TextDecoration.BOLD)).append(Component.text("H", NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.OBFUSCATED)));
-        ItemStack item = new ItemStack(Material.GLASS);
-        ItemMeta meta = item.getItemMeta();
         List<Component> lore = new ArrayList<>();
         for (int i = 0; i < 27; ++i) {
+            ItemStack item;
+            if (i == 0 || i == 1 || i == 9 || i == 18 || i == 19) {
+                item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+            } else if (i == 7 || i == 8 || i == 17 || i == 25 || i == 26) {
+                item = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+            } else if (i == 2 || i == 3 || i == 5 || i == 6 || i == 11 || i == 13 || i == 15 || i == 20 || i == 21 || i == 23 || i == 24) {
+                item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+            } else if (i == 10 || i == 16) {
+                item = new ItemStack(Material.END_CRYSTAL);
+            } else if (i == 12 || i == 14 || i == 22) {
+                item = new ItemStack(Material.BARRIER);
+            } else {
+                continue;
+            }
+            ItemMeta meta = item.getItemMeta();
             assert (meta != null);
             meta.displayName(Component.text(" "));
-            if (i == 0 || i == 1 || i == 9 || i == 18 || i == 19) {
-                item.setType(Material.RED_STAINED_GLASS_PANE);
-            } else if (i == 7 || i == 8 || i == 17 || i == 25 || i == 26) {
-                item.setType(Material.LIME_STAINED_GLASS_PANE);
-            } else if (i == 2 || i == 3 || i == 5 || i == 6 || i == 11 || i == 13 || i == 15 || i == 20 || i == 21 || i == 23 || i == 24) {
-                item.setType(Material.GRAY_STAINED_GLASS_PANE);
-            } else if (i == 10 || i == 16) {
-                item.setType(Material.END_CRYSTAL);
-                if (i == 10) {
-                    meta.displayName(Component.text("Cancel", NamedTextColor.RED).decorate(TextDecoration.BOLD));
-                    lore.add(Component.text("Click here to exit!", NamedTextColor.GRAY));
-                } else {
-                    meta.displayName(Component.text("Apply", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-                    lore.add(Component.text("Click here to apply runes to item!", NamedTextColor.GRAY));
-                    lore.add(Component.text("Cost: ???", NamedTextColor.GRAY));
-                    lore.add(Component.text("Runes can not be removed once applied!", NamedTextColor.DARK_GRAY));
-                }
-            } else {
-                if (i != 12 && i != 14 && i != 22) continue;
-                item.setType(Material.BARRIER);
+            if (i == 10) {
+                meta.displayName(Component.text("Cancel", NamedTextColor.RED).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click here to exit!", NamedTextColor.GRAY));
+            } else if (i == 16) {
+                meta.displayName(Component.text("Apply", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click here to apply runes to item!", NamedTextColor.GRAY));
+                lore.add(Component.text("Cost: ???", NamedTextColor.GRAY));
+                lore.add(Component.text("Runes can not be removed once applied!", NamedTextColor.DARK_GRAY));
+            } else if (i == 12 || i == 14 || i == 22) {
                 meta.displayName(Component.text("Rune slot not available!", NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD));
             }
             meta.lore(lore);

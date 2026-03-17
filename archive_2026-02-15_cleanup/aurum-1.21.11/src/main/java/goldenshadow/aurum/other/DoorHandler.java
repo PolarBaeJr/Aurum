@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
@@ -42,8 +41,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 public class DoorHandler {
-    private static final ArrayList<Door> activeDoors = new ArrayList();
-    private static final ArrayList<Door> toDelete = new ArrayList();
+    private static final ArrayList<Door> activeDoors = new ArrayList<>();
+    private static final ArrayList<Door> toDelete = new ArrayList<>();
     private static final Plugin plugin = Aurum.getPlugin();
 
     public static void removeActiveDoor(Door door) {

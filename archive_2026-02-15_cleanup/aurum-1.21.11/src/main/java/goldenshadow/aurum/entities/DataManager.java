@@ -55,7 +55,7 @@ import org.bukkit.entity.Player;
 public class DataManager {
     private static List<SpawnLocation> locationList = new ArrayList<SpawnLocation>();
     private static List<RespawnLocation> respawnLocationList = new ArrayList<RespawnLocation>();
-    private static HashMap<String, EntityData> mobMap = new HashMap();
+    private static HashMap<String, EntityData> mobMap = new HashMap<>();
     private static final List<List<SpawnLocation>> splitList = new ArrayList<List<SpawnLocation>>();
     private static IntervalSpawner fast_spawner;
     private static IntervalSpawner normal_spawner;
@@ -81,7 +81,7 @@ public class DataManager {
             respawnLocationList = new ArrayList<RespawnLocation>(Arrays.asList(respawnLocArray));
         }
         if (mobsFile.exists() && (mobMap = (HashMap)gson.fromJson((Reader)(mobsReader = new FileReader(mobsFile)), type = new TypeToken<HashMap<String, EntityData>>(){}.getType())) == null) {
-            mobMap = new HashMap();
+            mobMap = new HashMap<>();
         }
         DataManager.splitLocations();
         fast_spawner = new IntervalSpawner(splitList.get(0), 15);

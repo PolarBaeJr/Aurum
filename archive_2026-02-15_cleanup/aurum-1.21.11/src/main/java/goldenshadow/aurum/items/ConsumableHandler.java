@@ -26,6 +26,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -59,9 +60,9 @@ public class ConsumableHandler {
                         parsedData[i] = upper[i].split(",");
                     }
                     for (String[] parsedDatum : parsedData) {
-                        if (PotionEffectType.getByName((String)parsedDatum[0]) != null) {
+                        if (Registry.EFFECT.get(NamespacedKey.minecraft(parsedDatum[0].toLowerCase())) != null) {
                             int duration = Integer.parseInt(parsedDatum[2]) * 20;
-                            PotionEffectType potionEffectType = PotionEffectType.getByName((String)parsedDatum[0]);
+                            PotionEffectType potionEffectType = Registry.EFFECT.get(NamespacedKey.minecraft(parsedDatum[0].toLowerCase()));
                             assert (potionEffectType != null);
                             player.addPotionEffect(new PotionEffect(potionEffectType, duration, Integer.parseInt(parsedDatum[1]) - 1, false, false, true));
                             continue;

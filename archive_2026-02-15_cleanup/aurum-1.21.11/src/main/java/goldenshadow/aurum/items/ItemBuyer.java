@@ -55,23 +55,27 @@ public class ItemBuyer {
 
     public static Inventory createInventory() {
         Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Item Hoarder").decorate(TextDecoration.BOLD));
-        ItemStack item = new ItemStack(Material.GLASS);
-        ItemMeta meta = item.getItemMeta();
         List<Component> lore = new ArrayList<>();
         for (int i = 0; i < 27; ++i) {
+            ItemStack item;
+            if (i == 5 || i == 7 || i >= 14 && i <= 16 || i == 23 || i == 25) {
+                item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+            } else if (i == 8 || i == 17 || i == 26) {
+                item = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+            } else if (i == 6) {
+                item = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+            } else if (i == 24) {
+                item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+            } else {
+                continue;
+            }
+            ItemMeta meta = item.getItemMeta();
             assert (meta != null);
             meta.displayName(Component.text(" "));
-            if (i == 5 || i == 7 || i >= 14 && i <= 16 || i == 23 || i == 25) {
-                item.setType(Material.GRAY_STAINED_GLASS_PANE);
-            } else if (i == 8 || i == 17 || i == 26) {
-                item.setType(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
-            } else if (i == 6) {
-                item.setType(Material.LIME_STAINED_GLASS_PANE);
+            if (i == 6) {
                 meta.displayName(Component.text("Confirm", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
                 lore.add(Component.text("Click here to sell your items!", NamedTextColor.GRAY));
-            } else {
-                if (i != 24) continue;
-                item.setType(Material.RED_STAINED_GLASS_PANE);
+            } else if (i == 24) {
                 meta.displayName(Component.text("Cancel", NamedTextColor.RED).decorate(TextDecoration.BOLD));
                 lore.add(Component.text("Click here to exit!", NamedTextColor.GRAY));
             }

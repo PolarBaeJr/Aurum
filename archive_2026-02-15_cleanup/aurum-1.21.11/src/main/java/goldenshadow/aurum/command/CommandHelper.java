@@ -95,7 +95,8 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.BlockCommandSender;
@@ -129,7 +130,7 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 public class CommandHelper {
     private final ItemHelper itemHelper = new ItemHelper();
     private final ItemFactory itemFactory = new ItemFactory();
-    private final HashMap<UUID, EntityData> editMob = new HashMap();
+    private final HashMap<UUID, EntityData> editMob = new HashMap<>();
     final String[] consumableEffectNames = new String[]{"ABSORPTION", "BAD_OMEN", "BLINDNESS", "CONDUIT_POWER", "CONFUSION", "DAMAGE_RESISTANCE", "DARKNESS", "DOLPHINS_GRACE", "FAST_DIGGING", "FIRE_RESISTANCE", "GLOWING", "HARM", "HEAL", "HEALTH_BOOST", "HERO_OF_THE_VILLAGE", "HUNGER", "INCREASE_DAMAGE", "INVISIBILITY", "JUMP", "LEVITATION", "LUCK", "NIGHT_VISION", "POISON", "REGENERATION", "SATURATION", "SLOW", "SLOW_DIGGING", "SLOW_FALLING", "SPEED", "UNLUCK", "WATER_BREATHING", "WEAKNESS", "WITHER", "PRECISE_HEALTH", "PRECISE_DAMAGE"};
     final String[] livingEntities = new String[]{"ALLAY", "AXOLOTL", "BAT", "BEE", "BLAZE", "CAMEL", "CAT", "CAVE_SPIDER", "CHICKEN", "COD", "COW", "CREEPER", "DOLPHIN", "DONKEY", "DROWNED", "ELDER_GUARDIAN", "ENDERMAN", "ENDERMITE", "EVOKER", "FOX", "FROG", "GHAST", "GIANT", "GLOW_SQUID", "GOAT", "IRON_GOLEM", "GUARDIAN", "HOGLIN", "HORSE", "HUSK", "ILLUSIONER", "LLAMA", "MAGMA_CUBE", "MULE", "MUSHROOM_COW", "OCELOT", "PANDA", "PARROT", "PHANTOM", "PIG", "PIGLIN", "PIGLIN_BRUTE", "PILLAGER", "POLAR_BEAR", "PUFFERFISH", "RABBIT", "RAVAGER", "SALMON", "SHEEP", "SHULKER", "SILVERFISH", "SKELETON", "SKELETON_HORSE", "SLIME", "SNIFFER", "SNOWMAN", "SPIDER", "SQUID", "STRAY", "STRIDER", "TADPOLE", "TRADER_LLAMA", "TROPICAL_FISH", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WANDERING_TRADER", "WARDEN", "WITCH", "WITHER_SKELETON", "WOLF", "ZOGLIN", "ZOMBIE", "ZOMBIE_HORSE", "ZOMBIE_VILLAGER", "ZOMBIFIED_PIGLIN"};
 
@@ -2128,7 +2129,7 @@ public class CommandHelper {
                     if (args.length == 4) {
                         for (String s : new String[]{"COLD", "WARM", "TEMPERATE"}) {
                             if (!s.equals(args[3])) continue;
-                            this.editMob.get(player.getUniqueId()).setFrogVariant(Registry.FROG_VARIANT.get(NamespacedKey.minecraft(args[3].toLowerCase())));
+                            this.editMob.get(player.getUniqueId()).setFrogVariant(RegistryAccess.registryAccess().getRegistry(RegistryKey.FROG_VARIANT).get(NamespacedKey.minecraft(args[3].toLowerCase())));
                             player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Frog variant set!", NamedTextColor.YELLOW)));
                             return;
                         }
@@ -2176,7 +2177,7 @@ public class CommandHelper {
                     if (args.length == 4) {
                         for (String s : new String[]{"DESERT", "JUNGLE", "PLAINS", "SAVANNA", "SNOW", "SWAMP", "TAIGA"}) {
                             if (!s.equals(args[3])) continue;
-                            this.editMob.get(player.getUniqueId()).setVillagerType(Registry.VILLAGER_TYPE.get(NamespacedKey.minecraft(args[3].toLowerCase())));
+                            this.editMob.get(player.getUniqueId()).setVillagerType(RegistryAccess.registryAccess().getRegistry(RegistryKey.VILLAGER_TYPE).get(NamespacedKey.minecraft(args[3].toLowerCase())));
                             player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Villager biome set!", NamedTextColor.YELLOW)));
                             return;
                         }
@@ -2188,7 +2189,7 @@ public class CommandHelper {
                     if (args.length == 4) {
                         for (String s : new String[]{"ARMORER", "BUTCHER", "CARTOGRAPHER", "CLERIC", "FARMER", "FISHERMAN", "FLETCHER", "LEATHERWORKER", "LIBRARIAN", "MASON", "NITWIT", "SHEPHERD", "NONE", "SHEPHERD", "TOOLSMITH", "WEAPONSMITH"}) {
                             if (!s.equals(args[3])) continue;
-                            this.editMob.get(player.getUniqueId()).setVillagerProfession(Registry.VILLAGER_PROFESSION.get(NamespacedKey.minecraft(args[3].toLowerCase())));
+                            this.editMob.get(player.getUniqueId()).setVillagerProfession(RegistryAccess.registryAccess().getRegistry(RegistryKey.VILLAGER_PROFESSION).get(NamespacedKey.minecraft(args[3].toLowerCase())));
                             player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Villager profession set!", NamedTextColor.YELLOW)));
                             return;
                         }

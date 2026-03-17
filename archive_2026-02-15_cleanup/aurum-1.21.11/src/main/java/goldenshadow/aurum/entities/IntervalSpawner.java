@@ -54,7 +54,7 @@ public class IntervalSpawner {
                 this.rootList.add(chunk);
             }
             for (int i = 0; i < this.interval - size; ++i) {
-                this.rootList.add(new ArrayList());
+                this.rootList.add(new ArrayList<SpawnLocation>());
             }
         } else {
             int chunkSize = size / this.interval;

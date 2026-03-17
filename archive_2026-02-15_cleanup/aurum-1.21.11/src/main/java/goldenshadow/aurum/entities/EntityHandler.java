@@ -47,6 +47,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -74,7 +75,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class EntityHandler {
     private static final Map<UUID, HealthBar> bossBars = new HashMap<UUID, HealthBar>();
-    private static final ArrayList<UUID> toRemove = new ArrayList();
+    private static final ArrayList<UUID> toRemove = new ArrayList<>();
     private static final ItemHelper itemHelper = new ItemHelper();
 
     public static void interact(PlayerInteractEntityEvent event) {
@@ -110,7 +111,7 @@ public class EntityHandler {
                 ((Player)event.getEntity()).damage(event.getDamage(), event.getDamager());
                 event.setCancelled(true);
             }
-            if (p.getOpenInventory().getTitle().contains("Treasure Hoard")) {
+            if (PlainTextComponentSerializer.plainText().serialize(p.getOpenInventory().title()).contains("Treasure Hoard")) {
                 event.setCancelled(true);
             }
         }

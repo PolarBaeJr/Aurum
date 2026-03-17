@@ -4,7 +4,6 @@
  * Could not load the following classes:
  *  jline.internal.Nullable
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.Material
  *  org.bukkit.Particle

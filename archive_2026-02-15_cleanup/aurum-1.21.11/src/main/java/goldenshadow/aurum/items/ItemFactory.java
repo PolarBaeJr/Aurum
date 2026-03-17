@@ -78,7 +78,9 @@ public class ItemFactory {
         assert (meta != null);
         int customModelCode = this.getCustomModelCode(rarity);
         meta.getPersistentDataContainer().set(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER, level);
-        meta.setCustomModelData(Integer.valueOf(customModelCode));
+        CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+        customModelDataComponent.setFloats(List.of((float) customModelCode));
+        meta.setCustomModelDataComponent(customModelDataComponent);
         List<Component> lore = new ArrayList<>();
         ItemType itemType = this.getItemType(customModelCode, rarity);
         meta.displayName(this.getNameComponent(itemType, rarity));
@@ -122,7 +124,9 @@ public class ItemFactory {
         assert (meta != null);
         int customModelCode = this.getCustomModelCode(rarity);
         meta.getPersistentDataContainer().set(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER, level);
-        meta.setCustomModelData(Integer.valueOf(customModelCode));
+        CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+        customModelDataComponent.setFloats(List.of((float) customModelCode));
+        meta.setCustomModelDataComponent(customModelDataComponent);
         List<Component> lore = new ArrayList<>();
         meta.displayName(this.getNameComponent(itemType, rarity));
         int baseHealth = this.itemCreationHelper.getBaseHealth(rarity, itemType, level);
@@ -177,7 +181,9 @@ public class ItemFactory {
         assert (meta != null);
         meta.displayName(Component.text(displayName, Rarity.getTextColor(rarity)));
         if (!itemType.isArmor()) {
-            meta.setCustomModelData(customModelData);
+            CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+            customModelDataComponent.setFloats(List.of(customModelData.floatValue()));
+            meta.setCustomModelDataComponent(customModelDataComponent);
         }
         List<Component> lore = new ArrayList<>();
         lore.add(Component.empty());

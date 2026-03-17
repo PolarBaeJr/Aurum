@@ -44,8 +44,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 public class SpellManager {
-    private static final ArrayList<Spell> activeSpells = new ArrayList();
-    private static final ArrayList<UUID> toRemove = new ArrayList();
+    private static final ArrayList<Spell> activeSpells = new ArrayList<>();
+    private static final ArrayList<UUID> toRemove = new ArrayList<>();
 
     public static void spellLoop() {
         for (Player p : Bukkit.getOnlinePlayers()) {

@@ -2,12 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.md_5.bungee.api.ChatColor
- *  net.md_5.bungee.api.chat.BaseComponent
- *  net.md_5.bungee.api.chat.ClickEvent
- *  net.md_5.bungee.api.chat.ClickEvent$Action
- *  net.md_5.bungee.api.chat.ComponentBuilder
- *  net.md_5.bungee.api.chat.TextComponent
  *  org.bukkit.event.EventHandler
  *  org.bukkit.event.Listener
  *  org.bukkit.event.player.PlayerJoinEvent

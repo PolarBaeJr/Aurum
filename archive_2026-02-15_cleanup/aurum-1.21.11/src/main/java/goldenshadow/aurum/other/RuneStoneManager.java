@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.Material
  *  org.bukkit.Sound
@@ -39,146 +38,43 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 public class RuneStoneManager {
     public static Inventory createGUI(Player player) {
         Inventory inventory = Bukkit.createInventory(null, (int)9, Component.text("Rune Stone", NamedTextColor.WHITE).decorate(TextDecoration.BOLD));
         int playerLevel = ExperienceManager.getLevel(player);
-        ItemStack item = new ItemStack(Material.ENDER_PEARL);
+        inventory.setItem(0, RuneStoneManager.fillerElement());
+        inventory.setItem(8, RuneStoneManager.fillerElement());
+        inventory.setItem(1, createTeleportItem("Esper", 5, playerLevel, "Cost: 1 Silver Coin"));
+        inventory.setItem(2, createTeleportItem("Arbidel", 35, playerLevel, "Cost: 2 Silvers Coin"));
+        inventory.setItem(3, createTeleportItem("Runesmith Tower", 45, playerLevel, "Cost: 4 Silver Coins"));
+        inventory.setItem(4, createTeleportItem("Hearth", 60, playerLevel, "Cost: 6 Silver Coins"));
+        inventory.setItem(5, createTeleportItem("Scavenger Camp", 75, playerLevel, "Cost: 10 Silver Coins"));
+        inventory.setItem(6, createTeleportItem("Waya's Antiques and Oddities", 82, playerLevel, "Cost: 12 Silver Coins"));
+        inventory.setItem(7, createTeleportItem("Venir", 90, playerLevel, "Cost: 16 Silver Coins"));
+        return inventory;
+    }
+
+    private static ItemStack createTeleportItem(String name, int levelReq, int playerLevel, String cost) {
+        boolean meetsLevel = playerLevel >= levelReq;
+        ItemStack item = new ItemStack(meetsLevel ? Material.ENDER_EYE : Material.ENDER_PEARL);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
         List<Component> lore = new ArrayList<>();
-        for (int i = 0; i < 9; ++i) {
-            if (i == 0 || i == 8) {
-                inventory.setItem(i, RuneStoneManager.fillerElement());
-            }
-            if (i == 1) {
-                meta.displayName(Component.text("Esper", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-                lore.add(Component.text(""));
-                if (playerLevel >= 5) {
-                    item.setType(Material.ENDER_EYE);
-                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 5", NamedTextColor.GRAY)));
-                } else {
-                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 5", NamedTextColor.GRAY)));
-                }
-                lore.add(Component.text(""));
-                lore.add(Component.text("Cost: 1 Silver Coin", NamedTextColor.AQUA));
-                meta.lore(lore);
-                item.setItemMeta(meta);
-                inventory.setItem(i, item);
-                item.setType(Material.ENDER_PEARL);
-                lore.clear();
-            }
-            if (i == 2) {
-                meta.displayName(Component.text("Arbidel", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-                lore.add(Component.text(""));
-                if (playerLevel >= 35) {
-                    item.setType(Material.ENDER_EYE);
-                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 35", NamedTextColor.GRAY)));
-                } else {
-                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 35", NamedTextColor.GRAY)));
-                }
-                lore.add(Component.text(""));
-                lore.add(Component.text("Cost: 2 Silvers Coin", NamedTextColor.AQUA));
-                meta.lore(lore);
-                item.setItemMeta(meta);
-                inventory.setItem(i, item);
-                item.setType(Material.ENDER_PEARL);
-                lore.clear();
-            }
-            if (i == 3) {
-                meta.displayName(Component.text("Runesmith Tower", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-                lore.add(Component.text(""));
-                if (playerLevel >= 45) {
-                    item.setType(Material.ENDER_EYE);
-                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 45", NamedTextColor.GRAY)));
-                } else {
-                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 45", NamedTextColor.GRAY)));
-                }
-                lore.add(Component.text(""));
-                lore.add(Component.text("Cost: 4 Silver Coins", NamedTextColor.AQUA));
-                meta.lore(lore);
-                item.setItemMeta(meta);
-                inventory.setItem(i, item);
-                item.setType(Material.ENDER_PEARL);
-                lore.clear();
-            }
-            if (i == 4) {
-                meta.displayName(Component.text("Hearth", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-                lore.add(Component.text(""));
-                if (playerLevel >= 60) {
-                    item.setType(Material.ENDER_EYE);
-                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 60", NamedTextColor.GRAY)));
-                } else {
-                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 60", NamedTextColor.GRAY)));
-                }
-                lore.add(Component.text(""));
-                lore.add(Component.text("Cost: 6 Silver Coins", NamedTextColor.AQUA));
-                meta.lore(lore);
-                item.setItemMeta(meta);
-                inventory.setItem(i, item);
-                item.setType(Material.ENDER_PEARL);
-                lore.clear();
-            }
-            if (i == 5) {
-                meta.displayName(Component.text("Scavenger Camp", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-                lore.add(Component.text(""));
-                if (playerLevel >= 75) {
-                    item.setType(Material.ENDER_EYE);
-                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 75", NamedTextColor.GRAY)));
-                } else {
-                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 75", NamedTextColor.GRAY)));
-                }
-                lore.add(Component.text(""));
-                lore.add(Component.text("Cost: 10 Silver Coins", NamedTextColor.AQUA));
-                meta.lore(lore);
-                item.setItemMeta(meta);
-                inventory.setItem(i, item);
-                item.setType(Material.ENDER_PEARL);
-                lore.clear();
-            }
-            if (i == 6) {
-                meta.displayName(Component.text("Waya's Antiques and Oddities", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-                lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-                lore.add(Component.text(""));
-                if (playerLevel >= 82) {
-                    item.setType(Material.ENDER_EYE);
-                    lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 82", NamedTextColor.GRAY)));
-                } else {
-                    lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 82", NamedTextColor.GRAY)));
-                }
-                lore.add(Component.text(""));
-                lore.add(Component.text("Cost: 12 Silver Coins", NamedTextColor.AQUA));
-                meta.lore(lore);
-                item.setItemMeta(meta);
-                inventory.setItem(i, item);
-                item.setType(Material.ENDER_PEARL);
-                lore.clear();
-            }
-            if (i != 7) continue;
-            meta.displayName(Component.text("Venir", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
-            lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
-            lore.add(Component.text(""));
-            if (playerLevel >= 90) {
-                item.setType(Material.ENDER_EYE);
-                lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: 90", NamedTextColor.GRAY)));
-            } else {
-                lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: 90", NamedTextColor.GRAY)));
-            }
-            lore.add(Component.text(""));
-            lore.add(Component.text("Cost: 16 Silver Coins", NamedTextColor.AQUA));
-            meta.lore(lore);
-            item.setItemMeta(meta);
-            inventory.setItem(i, item);
-            item.setType(Material.ENDER_PEARL);
-            lore.clear();
+        meta.displayName(Component.text(name, NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+        lore.add(Component.text("Click to teleport", NamedTextColor.DARK_GRAY));
+        lore.add(Component.text(""));
+        if (meetsLevel) {
+            lore.add(Component.text("\u2714 ", NamedTextColor.GREEN).append(Component.text("Level Req: " + levelReq, NamedTextColor.GRAY)));
+        } else {
+            lore.add(Component.text("\u2716 ", NamedTextColor.RED).append(Component.text("Level Req: " + levelReq, NamedTextColor.GRAY)));
         }
-        return inventory;
+        lore.add(Component.text(""));
+        lore.add(Component.text(cost, NamedTextColor.AQUA));
+        meta.lore(lore);
+        item.setItemMeta(meta);
+        return item;
     }
 
     public static void createRuneStone(Location location) {
@@ -191,7 +87,9 @@ public class RuneStoneManager {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
-        meta.setCustomModelData(Integer.valueOf(100085));
+        CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+        customModelDataComponent.setFloats(List.of(100085f));
+        meta.setCustomModelDataComponent(customModelDataComponent);
         item.setItemMeta(meta);
         assert (display.getEquipment() != null);
         display.getEquipment().setHelmet(item);
@@ -256,7 +154,8 @@ public class RuneStoneManager {
         for (ItemStack item : player.getInventory().getContents()) {
             if (item == null || item.getType() != Material.GOLD_NUGGET) continue;
             assert (item.getItemMeta() != null);
-            if (item.getItemMeta().getCustomModelData() != 2) continue;
+            List<Float> cmdFloats = item.getItemMeta().getCustomModelDataComponent().getFloats();
+            if (cmdFloats.isEmpty() || cmdFloats.get(0) != 2f) continue;
             count += item.getAmount();
         }
         return count >= amount;
@@ -267,7 +166,8 @@ public class RuneStoneManager {
         for (ItemStack item : player.getInventory().getContents()) {
             if (item != null && item.getType() == Material.GOLD_NUGGET) {
                 assert (item.getItemMeta() != null);
-                if (item.getItemMeta().getCustomModelData() == 2) {
+                List<Float> cmdFloats2 = item.getItemMeta().getCustomModelDataComponent().getFloats();
+                if (!cmdFloats2.isEmpty() && cmdFloats2.get(0) == 2f) {
                     if (item.getAmount() <= amount - count) {
                         count += item.getAmount();
                         item.setAmount(0);

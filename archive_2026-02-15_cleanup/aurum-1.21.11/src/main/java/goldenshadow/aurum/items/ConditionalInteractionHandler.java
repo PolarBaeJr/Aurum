@@ -117,7 +117,7 @@ public class ConditionalInteractionHandler {
         if (itemStack.getAmount() > itemCount) {
             itemStack.setAmount(itemStack.getAmount() - itemCount);
         } else {
-            itemStack.setType(Material.AIR);
+            itemStack = itemStack.withType(Material.AIR);
         }
         player.getInventory().setItemInMainHand(itemStack);
         String command = (String)container.get(new NamespacedKey((Plugin)Aurum.getPlugin(), "aurum_conditional_interaction_command"), PersistentDataType.STRING);
