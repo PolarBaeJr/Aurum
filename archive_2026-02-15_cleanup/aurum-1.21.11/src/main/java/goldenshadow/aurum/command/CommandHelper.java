@@ -95,6 +95,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.BlockCommandSender;
@@ -119,6 +120,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -309,7 +311,9 @@ public class CommandHelper {
                 player.sendMessage(Component.text("[Aurum] Usage: /aurum edit_item set_base_health <health>", NamedTextColor.RED));
             } else if (args[1].equalsIgnoreCase("set_CustomModelData")) {
                 if (args.length == 3 && this.isInteger(args[2])) {
-                    meta.setCustomModelData(Integer.valueOf(Integer.parseInt(args[2])));
+                    CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+                    customModelDataComponent.setFloats(List.of((float) Integer.parseInt(args[2])));
+                    meta.setCustomModelDataComponent(customModelDataComponent);
                     player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("CustomModelData set!", NamedTextColor.YELLOW)));
                     meta.lore(lore);
                     item.setItemMeta(meta);
@@ -958,7 +962,9 @@ public class CommandHelper {
                 itemStack = new ItemStack(Material.STICK);
                 meta = itemStack.getItemMeta();
                 assert (meta != null);
-                meta.setCustomModelData(Integer.valueOf(100048));
+                CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+                customModelDataComponent.setFloats(List.of(100048f));
+                meta.setCustomModelDataComponent(customModelDataComponent);
                 itemStack.setItemMeta(meta);
                 assert (chestModel.getEquipment() != null);
                 chestModel.getEquipment().setHelmet(itemStack);
@@ -968,7 +974,9 @@ public class CommandHelper {
                 itemStack = new ItemStack(Material.STICK);
                 meta = itemStack.getItemMeta();
                 assert (meta != null);
-                meta.setCustomModelData(Integer.valueOf(100049));
+                CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+                customModelDataComponent.setFloats(List.of(100049f));
+                meta.setCustomModelDataComponent(customModelDataComponent);
                 itemStack.setItemMeta(meta);
                 assert (chestModel.getEquipment() != null);
                 chestModel.getEquipment().setHelmet(itemStack);
@@ -978,7 +986,9 @@ public class CommandHelper {
                 itemStack = new ItemStack(Material.STICK);
                 meta = itemStack.getItemMeta();
                 assert (meta != null);
-                meta.setCustomModelData(Integer.valueOf(100050));
+                CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+                customModelDataComponent.setFloats(List.of(100050f));
+                meta.setCustomModelDataComponent(customModelDataComponent);
                 itemStack.setItemMeta(meta);
                 assert (chestModel.getEquipment() != null);
                 chestModel.getEquipment().setHelmet(itemStack);
@@ -2118,7 +2128,7 @@ public class CommandHelper {
                     if (args.length == 4) {
                         for (String s : new String[]{"COLD", "WARM", "TEMPERATE"}) {
                             if (!s.equals(args[3])) continue;
-                            this.editMob.get(player.getUniqueId()).setFrogVariant(Frog.Variant.valueOf((String)args[3]));
+                            this.editMob.get(player.getUniqueId()).setFrogVariant(Registry.FROG_VARIANT.get(NamespacedKey.minecraft(args[3].toLowerCase())));
                             player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Frog variant set!", NamedTextColor.YELLOW)));
                             return;
                         }
@@ -2166,7 +2176,7 @@ public class CommandHelper {
                     if (args.length == 4) {
                         for (String s : new String[]{"DESERT", "JUNGLE", "PLAINS", "SAVANNA", "SNOW", "SWAMP", "TAIGA"}) {
                             if (!s.equals(args[3])) continue;
-                            this.editMob.get(player.getUniqueId()).setVillagerType(Villager.Type.valueOf((String)args[3]));
+                            this.editMob.get(player.getUniqueId()).setVillagerType(Registry.VILLAGER_TYPE.get(NamespacedKey.minecraft(args[3].toLowerCase())));
                             player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Villager biome set!", NamedTextColor.YELLOW)));
                             return;
                         }
@@ -2178,7 +2188,7 @@ public class CommandHelper {
                     if (args.length == 4) {
                         for (String s : new String[]{"ARMORER", "BUTCHER", "CARTOGRAPHER", "CLERIC", "FARMER", "FISHERMAN", "FLETCHER", "LEATHERWORKER", "LIBRARIAN", "MASON", "NITWIT", "SHEPHERD", "NONE", "SHEPHERD", "TOOLSMITH", "WEAPONSMITH"}) {
                             if (!s.equals(args[3])) continue;
-                            this.editMob.get(player.getUniqueId()).setVillagerProfession(Villager.Profession.valueOf((String)args[3]));
+                            this.editMob.get(player.getUniqueId()).setVillagerProfession(Registry.VILLAGER_PROFESSION.get(NamespacedKey.minecraft(args[3].toLowerCase())));
                             player.sendMessage(Component.text("[Aurum] ", NamedTextColor.GOLD).append(Component.text("Villager profession set!", NamedTextColor.YELLOW)));
                             return;
                         }
