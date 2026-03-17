@@ -40,7 +40,7 @@ public class RespawnLocation {
     public void scan() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getLocation().getWorld() == null || !player.getLocation().getWorld().equals(this.getLocation().getWorld()) || !(player.getLocation().distance(this.getLocation()) <= (double)this.range)) continue;
-            player.setBedSpawnLocation(this.getLocation(), true);
+            player.setRespawnLocation(this.getLocation(), true);
         }
     }
 
