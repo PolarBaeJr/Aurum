@@ -3,7 +3,6 @@
  *
  * Could not load the following classes:
  *  org.bukkit.attribute.Attribute
- *  org.bukkit.boss.BossBar
  *  org.bukkit.entity.LivingEntity
  *  org.bukkit.entity.Player
  */
@@ -11,11 +10,10 @@ package goldenshadow.aurum.entities;
 
 import goldenshadow.aurum.entities.EntityHandler;
 import java.util.Objects;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -32,7 +30,7 @@ public class HealthBar {
 
     public void tick() {
         if (this.ttl <= 0) {
-            this.bossBar.removeAll();
+            this.player.hideBossBar(this.bossBar);
             EntityHandler.removeBar(this.player);
         }
         --this.ttl;
@@ -49,14 +47,14 @@ public class HealthBar {
             Component entityName = entity.customName();
             title = (entityName != null ? entityName : Component.text("Unknown")).append(healthSuffix);
         }
-        this.bossBar.setTitle(LegacyComponentSerializer.legacySection().serialize(title));
-        this.bossBar.setProgress(Math.max(0.0, (entity.getHealth() - damage) / Objects.requireNonNull(entity.getAttribute(Attribute.MAX_HEALTH)).getValue()));
-        this.bossBar.addPlayer(this.player);
+        this.bossBar.name(title);
+        this.bossBar.progress((float) Math.max(0.0, Math.min(1.0, (entity.getHealth() - damage) / Objects.requireNonNull(entity.getAttribute(Attribute.MAX_HEALTH)).getValue())));
+        this.player.showBossBar(this.bossBar);
         this.ttl = 3;
     }
 
     public void remove() {
-        this.bossBar.removeAll();
+        this.player.hideBossBar(this.bossBar);
     }
 }
 

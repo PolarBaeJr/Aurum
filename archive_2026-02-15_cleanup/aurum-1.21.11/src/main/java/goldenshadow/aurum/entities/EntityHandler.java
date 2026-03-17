@@ -7,9 +7,7 @@
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Particle
  *  org.bukkit.attribute.Attribute
- *  org.bukkit.boss.BarColor
- *  org.bukkit.boss.BarFlag
- *  org.bukkit.boss.BarStyle
+ *  net.kyori.adventure.bossbar.BossBar
  *  org.bukkit.entity.Allay
  *  org.bukkit.entity.AreaEffectCloud
  *  org.bukkit.entity.Entity
@@ -54,9 +52,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
-import org.bukkit.boss.BarStyle;
+import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.entity.Allay;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
@@ -127,7 +123,7 @@ public class EntityHandler {
                     if (bossBars.containsKey(player.getUniqueId())) {
                         bossBars.get(player.getUniqueId()).update(entity3, event.getFinalDamage());
                     } else {
-                        bossBars.put(player.getUniqueId(), new HealthBar(Bukkit.getServer().createBossBar(" ", BarColor.RED, BarStyle.SOLID, new BarFlag[0]), entity3, player, event.getFinalDamage()));
+                        bossBars.put(player.getUniqueId(), new HealthBar(BossBar.bossBar(Component.text(" "), 1.0f, BossBar.Color.RED, BossBar.Overlay.PROGRESS), entity3, player, event.getFinalDamage()));
                     }
                 }
                 if (entity3 instanceof Slime && (entity3.getScoreboardTags().contains("aurum_door") || entity3.getScoreboardTags().contains("aurum_conditional_interaction") || entity3.getScoreboardTags().contains("aurum_event_interaction") || entity3.getScoreboardTags().contains("aurum_pickup_interaction") || entity3.getScoreboardTags().contains("aurum_boss_chest") || entity3.getScoreboardTags().contains("aurum_chest") || entity3.getScoreboardTags().contains("aurum_runesmith") || entity3.getScoreboardTags().contains("aurum_rune_stone"))) {
