@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Color
  *  org.bukkit.Location
  *  org.bukkit.Particle
@@ -44,8 +43,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -123,7 +123,7 @@ public class DataManager {
     public static void spawnTick() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getScoreboardTags().contains("aurum_debug_spawning")) continue;
-            p.sendMessage(ChatColor.AQUA + "--------------------");
+            p.sendMessage(Component.text("--------------------", NamedTextColor.AQUA));
         }
         fast_spawner.ticker();
         normal_spawner.ticker();
@@ -260,10 +260,10 @@ public class DataManager {
     }
 
     public static void getIntervalSpawnerInfo(Player player) {
-        player.sendMessage(fast_spawner.toString());
-        player.sendMessage(normal_spawner.toString());
-        player.sendMessage(slow_spawner.toString());
-        player.sendMessage(very_slow_spawner.toString());
+        player.sendMessage(fast_spawner.toComponent());
+        player.sendMessage(normal_spawner.toComponent());
+        player.sendMessage(slow_spawner.toComponent());
+        player.sendMessage(very_slow_spawner.toComponent());
     }
 
     static {

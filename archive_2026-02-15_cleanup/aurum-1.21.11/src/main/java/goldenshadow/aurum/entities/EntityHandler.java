@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Particle
@@ -47,8 +46,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -91,10 +92,13 @@ public class EntityHandler {
 
     public static void unload(ChunkUnloadEvent event) {
         Arrays.stream(event.getChunk().getEntities()).filter(x -> x.getScoreboardTags().contains("aurum_door_display")).forEach(x -> {
-            String name = x.getCustomName();
-            if (name != null && !name.matches("\u00a77Get \u00a7e\\[\\d+/\\d+ Tokens")) {
-                name = name.replaceAll("(?<=\\[)\\d+", "0");
-                x.setCustomName(name);
+            Component customName = x.customName();
+            if (customName != null) {
+                String name = LegacyComponentSerializer.legacySection().serialize(customName);
+                if (!name.matches("\u00a77Get \u00a7e\\[\\d+/\\d+ Tokens")) {
+                    name = name.replaceAll("(?<=\\[)\\d+", "0");
+                    x.customName(LegacyComponentSerializer.legacySection().deserialize(name));
+                }
             }
         });
     }
@@ -193,7 +197,7 @@ public class EntityHandler {
                 display.setRadius(0.0f);
                 display.setDuration(20);
                 display.setParticle(Particle.BLOCK, Material.AIR.createBlockData());
-                display.setCustomName(ChatColor.GRAY + "[" + player.getName() + " +" + (int)((double)xp * itemHelper.getAttributeRoll(player, AttributeID.XP_BONUS, true)) + " XP]");
+                display.customName(Component.text("[" + player.getName() + " +" + (int)((double)xp * itemHelper.getAttributeRoll(player, AttributeID.XP_BONUS, true)) + " XP]", NamedTextColor.GRAY));
                 display.setCustomNameVisible(true);
             }
         }

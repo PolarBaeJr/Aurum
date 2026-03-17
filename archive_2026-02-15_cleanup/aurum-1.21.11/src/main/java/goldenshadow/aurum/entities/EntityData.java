@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.DyeColor
  *  org.bukkit.entity.EntityType
  *  org.bukkit.entity.Fox$Type
@@ -22,7 +21,8 @@ import goldenshadow.aurum.entities.AIType;
 import goldenshadow.aurum.entities.SpellName;
 import goldenshadow.aurum.entities.XpType;
 import java.util.Arrays;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fox;
@@ -81,29 +81,27 @@ public class EntityData {
     private int size = 0;
     private double itemDropChance = 1.0;
 
-    public String toString() {
-        String string = "";
-        string = string.concat(ChatColor.DARK_AQUA + "=======================================\n");
-        string = string.concat(ChatColor.YELLOW + "Type: " + this.type + ", Health: " + this.health + "\n");
-        string = string.concat(ChatColor.YELLOW + "Level: " + this.level + ", XpType: " + this.xpType.toString() + "\n");
-        string = string.concat(ChatColor.YELLOW + "AiType: " + this.aiType.toString() + ", Damage: " + this.damage + "\n");
-        string = string.concat(ChatColor.YELLOW + "WalkSpeed: " + this.speed + ", AttackKnockback: " + this.knockback + "\n");
-        string = string.concat(ChatColor.YELLOW + "FollowRange: " + this.followRange + ", Name: " + this.name + "\n");
-        string = string.concat(ChatColor.YELLOW + "Mainhand: " + this.mainhandName + ", Offhand: " + this.offhandName + "\n");
-        string = string.concat(ChatColor.YELLOW + "Helmet: " + this.helmetName + ", Chestplate: " + this.chestplateName + "\n");
-        string = string.concat(ChatColor.YELLOW + "Leggings: " + this.leggingsName + ", Boots: " + this.bootsName + "\n");
-        string = string.concat(ChatColor.YELLOW + "DefaultLoot: " + this.defaultLoot + ", Knockback Resistance: " + this.knockbackResistance + "\n");
-        string = string.concat(ChatColor.YELLOW + "Spells: " + Arrays.toString((Object[])this.spellNames) + "\n");
-        string = string.concat(ChatColor.YELLOW + "Baby: " + this.isBaby + ", Dye Color: " + this.dyeColor.toString() + "\n");
-        string = string.concat(ChatColor.YELLOW + "Horse Color: " + this.horseColor.toString() + ", HorseStyle: " + this.horseStyle.toString() + "\n");
-        string = string.concat(ChatColor.YELLOW + "Llama Color: " + this.llamaColor.toString() + ", Parrot Variant: " + this.parrotVariant + "\n");
-        string = string.concat(ChatColor.YELLOW + "Frog Variant: " + this.frogVariant.toString() + ", Mooshroom Variant: " + this.mushroomCowVariant.toString() + "\n");
-        string = string.concat(ChatColor.YELLOW + "Villager Biome: " + this.villagerType.toString() + ", Villager Profession: " + this.villagerProfession.toString() + "\n");
-        string = string.concat(ChatColor.YELLOW + "Fox Type: " + this.foxType.toString() + ", Rabbit Type: " + this.rabbitType.toString() + "\n");
-        string = string.concat(ChatColor.YELLOW + "Spell Multiplier: " + this.spellDamageMultiplier + ", Spell Cast Chance: " + this.spellCastChance + "\n");
-        string = string.concat(ChatColor.YELLOW + "Size: " + this.size + ", Item Drop Chance: " + this.itemDropChance);
-        string = string.concat(ChatColor.DARK_AQUA + "=======================================\n");
-        return string;
+    public Component toComponent() {
+        return Component.text("=======================================\n", NamedTextColor.DARK_AQUA)
+                .append(Component.text("Type: " + this.type + ", Health: " + this.health + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Level: " + this.level + ", XpType: " + this.xpType.toString() + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("AiType: " + this.aiType.toString() + ", Damage: " + this.damage + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("WalkSpeed: " + this.speed + ", AttackKnockback: " + this.knockback + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("FollowRange: " + this.followRange + ", Name: " + this.name + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Mainhand: " + this.mainhandName + ", Offhand: " + this.offhandName + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Helmet: " + this.helmetName + ", Chestplate: " + this.chestplateName + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Leggings: " + this.leggingsName + ", Boots: " + this.bootsName + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("DefaultLoot: " + this.defaultLoot + ", Knockback Resistance: " + this.knockbackResistance + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Spells: " + Arrays.toString((Object[])this.spellNames) + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Baby: " + this.isBaby + ", Dye Color: " + this.dyeColor.toString() + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Horse Color: " + this.horseColor.toString() + ", HorseStyle: " + this.horseStyle.toString() + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Llama Color: " + this.llamaColor.toString() + ", Parrot Variant: " + this.parrotVariant + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Frog Variant: " + this.frogVariant.toString() + ", Mooshroom Variant: " + this.mushroomCowVariant.toString() + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Villager Biome: " + this.villagerType.toString() + ", Villager Profession: " + this.villagerProfession.toString() + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Fox Type: " + this.foxType.toString() + ", Rabbit Type: " + this.rabbitType.toString() + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Spell Multiplier: " + this.spellDamageMultiplier + ", Spell Cast Chance: " + this.spellCastChance + "\n", NamedTextColor.YELLOW))
+                .append(Component.text("Size: " + this.size + ", Item Drop Chance: " + this.itemDropChance, NamedTextColor.YELLOW))
+                .append(Component.text("=======================================\n", NamedTextColor.DARK_AQUA));
     }
 
     public int getSize() {

@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.World
  */
@@ -10,7 +9,8 @@ package goldenshadow.aurum.entities;
 
 import goldenshadow.aurum.entities.SpawnInterval;
 import java.util.UUID;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -71,14 +71,23 @@ public class SpawnLocation {
         return this.z;
     }
 
-    public String toString() {
-        String string = "";
-        string = string.concat(ChatColor.DARK_AQUA + "=======================================\n");
-        string = string.concat(ChatColor.YELLOW + "UUID: " + ChatColor.AQUA + this.uuid.toString() + ChatColor.YELLOW + ", Entity: " + ChatColor.AQUA + this.entity + "\n");
-        string = string.concat(ChatColor.YELLOW + "Spawn Interval: " + ChatColor.AQUA + this.spawn_interval.toString() + ChatColor.YELLOW + ", Respawn Tolerance: " + ChatColor.AQUA + this.respawn_tolerance + "\n");
-        string = string.concat(ChatColor.YELLOW + "X: " + ChatColor.AQUA + this.x + ChatColor.YELLOW + ", Y: " + ChatColor.AQUA + this.y + ChatColor.YELLOW + ", Z: " + ChatColor.AQUA + this.z + "\n");
-        string = string.concat(ChatColor.DARK_AQUA + "=======================================");
-        return string;
+    public Component toComponent() {
+        return Component.text("=======================================\n", NamedTextColor.DARK_AQUA)
+                .append(Component.text("UUID: ", NamedTextColor.YELLOW))
+                .append(Component.text(this.uuid.toString(), NamedTextColor.AQUA))
+                .append(Component.text(", Entity: ", NamedTextColor.YELLOW))
+                .append(Component.text(this.entity + "\n", NamedTextColor.AQUA))
+                .append(Component.text("Spawn Interval: ", NamedTextColor.YELLOW))
+                .append(Component.text(this.spawn_interval.toString(), NamedTextColor.AQUA))
+                .append(Component.text(", Respawn Tolerance: ", NamedTextColor.YELLOW))
+                .append(Component.text(this.respawn_tolerance + "\n", NamedTextColor.AQUA))
+                .append(Component.text("X: ", NamedTextColor.YELLOW))
+                .append(Component.text(String.valueOf(this.x), NamedTextColor.AQUA))
+                .append(Component.text(", Y: ", NamedTextColor.YELLOW))
+                .append(Component.text(String.valueOf(this.y), NamedTextColor.AQUA))
+                .append(Component.text(", Z: ", NamedTextColor.YELLOW))
+                .append(Component.text(this.z + "\n", NamedTextColor.AQUA))
+                .append(Component.text("=======================================", NamedTextColor.DARK_AQUA));
     }
 }
 

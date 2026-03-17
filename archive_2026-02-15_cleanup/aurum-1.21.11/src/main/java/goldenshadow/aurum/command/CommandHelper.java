@@ -1424,7 +1424,7 @@ public class CommandHelper {
             if (args[1].equalsIgnoreCase("spawn_node_info")) {
                 SpawnLocation location = this.getClosestNode(player);
                 if (location != null) {
-                    player.sendMessage(location.toString());
+                    player.sendMessage(location.toComponent());
                 }
                 return;
             }
@@ -1806,7 +1806,7 @@ public class CommandHelper {
         }
         if (args[1].equalsIgnoreCase("info")) {
             if (this.editMob.containsKey(player.getUniqueId())) {
-                player.sendMessage(this.editMob.get(player.getUniqueId()).toString());
+                player.sendMessage(this.editMob.get(player.getUniqueId()).toComponent());
                 return;
             }
             player.sendMessage(ChatColor.RED + "[Aurum] Error: You aren't currently editing a mob!");

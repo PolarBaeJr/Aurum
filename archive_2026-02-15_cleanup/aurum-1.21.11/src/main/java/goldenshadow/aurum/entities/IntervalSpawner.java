@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.NamespacedKey
  *  org.bukkit.World
  *  org.bukkit.entity.Entity
@@ -105,10 +104,14 @@ public class IntervalSpawner {
             LivingEntity entity = (LivingEntity)location.getWorld().spawnEntity(location.getLocation(), mob.getType(), false);
             CustomEntity.deserialize(entity, DataManager.getMobByName(location.getEntity()), location.getUuid());
             ++this.successfulSpawns;
-            this.spawnedThisTick.add(entity.getCustomName());
+            Component entityName = entity.customName();
+            this.spawnedThisTick.add(entityName != null ? PlainTextComponentSerializer.plainText().serialize(entityName) : "Unknown");
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (!p.getScoreboardTags().contains("aurum_debug_precise_mob_spawns")) continue;
-                p.sendMessage(ChatColor.DARK_AQUA + "Spawned new " + ChatColor.AQUA + entity.getCustomName() + ChatColor.DARK_AQUA + " at " + ChatColor.AQUA + (int)location.getLocation().getX() + " " + (int)location.getLocation().getY() + " " + (int)location.getLocation().getZ());
+                p.sendMessage(Component.text("Spawned new ", NamedTextColor.DARK_AQUA)
+                        .append(entityName != null ? entityName : Component.text("Unknown", NamedTextColor.AQUA))
+                        .append(Component.text(" at ", NamedTextColor.DARK_AQUA))
+                        .append(Component.text((int)location.getLocation().getX() + " " + (int)location.getLocation().getY() + " " + (int)location.getLocation().getZ(), NamedTextColor.AQUA)));
             }
         }
     }
@@ -139,13 +142,13 @@ public class IntervalSpawner {
         return false;
     }
 
-    public String toString() {
-        String s = "";
-        s = s.concat(ChatColor.DARK_AQUA + "------------------\n");
-        s = s.concat(ChatColor.DARK_AQUA + "Interval: " + ChatColor.AQUA + this.getInterval() + "s\n");
-        s = s.concat(ChatColor.DARK_AQUA + "Total Size: " + ChatColor.AQUA + this.totalSize + " locations\n");
-        s = s.concat(ChatColor.DARK_AQUA + "------------------");
-        return s;
+    public Component toComponent() {
+        return Component.text("------------------\n", NamedTextColor.DARK_AQUA)
+                .append(Component.text("Interval: ", NamedTextColor.DARK_AQUA))
+                .append(Component.text(this.getInterval() + "s\n", NamedTextColor.AQUA))
+                .append(Component.text("Total Size: ", NamedTextColor.DARK_AQUA))
+                .append(Component.text(this.totalSize + " locations\n", NamedTextColor.AQUA))
+                .append(Component.text("------------------", NamedTextColor.DARK_AQUA));
     }
 
     public static void listLoadedWorlds() {
