@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
@@ -28,8 +27,11 @@ import goldenshadow.aurum.Aurum;
 import goldenshadow.aurum.items.ItemFactory;
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -52,28 +54,28 @@ public class ItemBuyer {
     private static final ItemFactory itemFactory = new ItemFactory();
 
     public static Inventory createInventory() {
-        Inventory inventory = Bukkit.createInventory(null, (InventoryType)InventoryType.CHEST, (String)(ChatColor.BOLD + "Item Hoarder"));
+        Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Item Hoarder").decorate(TextDecoration.BOLD));
         ItemStack item = new ItemStack(Material.GLASS);
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         for (int i = 0; i < 27; ++i) {
             assert (meta != null);
-            meta.setDisplayName(" ");
+            meta.displayName(Component.text(" "));
             if (i == 5 || i == 7 || i >= 14 && i <= 16 || i == 23 || i == 25) {
                 item.setType(Material.GRAY_STAINED_GLASS_PANE);
             } else if (i == 8 || i == 17 || i == 26) {
                 item.setType(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
             } else if (i == 6) {
                 item.setType(Material.LIME_STAINED_GLASS_PANE);
-                meta.setDisplayName(ChatColor.GREEN + String.valueOf(ChatColor.BOLD) + "Confirm");
-                lore.add(ChatColor.GRAY + "Click here to sell your items!");
+                meta.displayName(Component.text("Confirm", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click here to sell your items!", NamedTextColor.GRAY));
             } else {
                 if (i != 24) continue;
                 item.setType(Material.RED_STAINED_GLASS_PANE);
-                meta.setDisplayName(ChatColor.RED + String.valueOf(ChatColor.BOLD) + "Cancel");
-                lore.add(ChatColor.GRAY + "Click here to exit!");
+                meta.displayName(Component.text("Cancel", NamedTextColor.RED).decorate(TextDecoration.BOLD));
+                lore.add(Component.text("Click here to exit!", NamedTextColor.GRAY));
             }
-            meta.setLore(lore);
+            meta.lore(lore);
             item.setItemMeta(meta);
             inventory.setItem(i, item);
             lore.clear();
@@ -102,7 +104,7 @@ public class ItemBuyer {
         Player player = (Player)event.getWhoClicked();
         if (event.getCurrentItem() != null) {
             if (event.getClickedInventory() == player.getInventory()) {
-                if (event.getCurrentItem().getItemMeta() != null && event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().stream().anyMatch(x -> x.contains("Common Item") || x.contains("Rare Item") || x.contains("Epic Item") || x.contains("Legendary Item"))) {
+                if (event.getCurrentItem().getItemMeta() != null && event.getCurrentItem().getItemMeta().lore() != null && event.getCurrentItem().getItemMeta().lore().stream().anyMatch(x -> PlainTextComponentSerializer.plainText().serialize(x).contains("Common Item") || PlainTextComponentSerializer.plainText().serialize(x).contains("Rare Item") || PlainTextComponentSerializer.plainText().serialize(x).contains("Epic Item") || PlainTextComponentSerializer.plainText().serialize(x).contains("Legendary Item"))) {
                     for (int i = 0; i < 27; ++i) {
                         if (player.getOpenInventory().getItem(i) == null) {
                             player.getOpenInventory().setItem(i, event.getCurrentItem());
@@ -201,7 +203,7 @@ public class ItemBuyer {
     }
 
     public static boolean isItemBuyerGUI(String title) {
-        return title.equals(ChatColor.BOLD + "Item Hoarder");
+        return title.contains("Item Hoarder");
     }
 
     private static void returnItem(Player player, ItemStack item) {
@@ -217,8 +219,8 @@ public class ItemBuyer {
         for (ItemStack item : list) {
             Integer temp;
             int levelMultiplier;
-            if (item.getItemMeta() == null || item.getItemMeta().getLore() == null) continue;
-            if (item.getItemMeta().getLore().stream().anyMatch(x -> x.contains("Common Item"))) {
+            if (item.getItemMeta() == null || item.getItemMeta().lore() == null) continue;
+            if (item.getItemMeta().lore().stream().anyMatch(x -> PlainTextComponentSerializer.plainText().serialize(x).contains("Common Item"))) {
                 levelMultiplier = 1;
                 if (item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER)) {
                     temp = (Integer)item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER);
@@ -226,7 +228,7 @@ public class ItemBuyer {
                 }
                 count += levelMultiplier;
             }
-            if (item.getItemMeta().getLore().stream().anyMatch(x -> x.contains("Rare Item"))) {
+            if (item.getItemMeta().lore().stream().anyMatch(x -> PlainTextComponentSerializer.plainText().serialize(x).contains("Rare Item"))) {
                 levelMultiplier = 1;
                 if (item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER)) {
                     temp = (Integer)item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER);
@@ -234,7 +236,7 @@ public class ItemBuyer {
                 }
                 count += 2 * levelMultiplier;
             }
-            if (item.getItemMeta().getLore().stream().anyMatch(x -> x.contains("Epic Item"))) {
+            if (item.getItemMeta().lore().stream().anyMatch(x -> PlainTextComponentSerializer.plainText().serialize(x).contains("Epic Item"))) {
                 levelMultiplier = 1;
                 if (item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER)) {
                     temp = (Integer)item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER);
@@ -242,7 +244,7 @@ public class ItemBuyer {
                 }
                 count += 3 * levelMultiplier;
             }
-            if (!item.getItemMeta().getLore().stream().anyMatch(x -> x.contains("Legendary Item"))) continue;
+            if (!item.getItemMeta().lore().stream().anyMatch(x -> PlainTextComponentSerializer.plainText().serialize(x).contains("Legendary Item"))) continue;
             levelMultiplier = 1;
             if (item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER)) {
                 temp = (Integer)item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER);
@@ -282,7 +284,7 @@ public class ItemBuyer {
         ItemStack itemStack = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = itemStack.getItemMeta();
         assert (meta != null);
-        meta.setDisplayName(" ");
+        meta.displayName(Component.text(" "));
         itemStack.setItemMeta(meta);
         return itemStack;
     }

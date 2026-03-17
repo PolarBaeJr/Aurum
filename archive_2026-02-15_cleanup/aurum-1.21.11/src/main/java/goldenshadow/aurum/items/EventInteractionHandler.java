@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Particle
  *  org.bukkit.command.CommandSender
@@ -20,8 +19,9 @@ import goldenshadow.aurum.items.ItemHelper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.command.CommandSender;
@@ -45,7 +45,7 @@ public class EventInteractionHandler {
             }
             assert (value != null);
             if (value.contains(player.getName())) {
-                player.sendMessage(ChatColor.GRAY + "This can only be done once...");
+                player.sendMessage(Component.text("This can only be done once...", NamedTextColor.GRAY));
             } else {
                 EventInteractionHandler.triggerEvent(player, interaction.getPersistentDataContainer());
                 value = value.equals("") ? player.getName() : value + "," + player.getName();
@@ -55,7 +55,9 @@ public class EventInteractionHandler {
             EventInteractionHandler.triggerEvent(player, interaction.getPersistentDataContainer());
         } else if (interaction.getScoreboardTags().contains("aurum_event_interaction:timed_use")) {
             if (eventCooldown.containsKey(player.getUniqueId()) && eventCooldown.get(player.getUniqueId()).containsKey(interaction.getUniqueId()) && eventCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) > System.currentTimeMillis()) {
-                player.sendMessage(ChatColor.GRAY + "Wait " + itemHelper.parseCurrentMillis(eventCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) - System.currentTimeMillis()) + " before doing this again.");
+                player.sendMessage(Component.text("Wait ", NamedTextColor.GRAY)
+                    .append(Component.text(itemHelper.parseCurrentMillis(eventCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) - System.currentTimeMillis()), NamedTextColor.GRAY))
+                    .append(Component.text(" before doing this again.", NamedTextColor.GRAY)));
                 return;
             }
             Map<UUID, Long> inner = new HashMap<>();

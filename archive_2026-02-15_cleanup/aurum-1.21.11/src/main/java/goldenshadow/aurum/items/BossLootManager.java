@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
@@ -27,10 +26,12 @@ import goldenshadow.aurum.items.Rarity;
 import goldenshadow.aurum.items.Treasure;
 import goldenshadow.aurum.other.ExperienceManager;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -42,6 +43,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -68,7 +70,9 @@ public class BossLootManager {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
-        meta.setCustomModelData(Integer.valueOf(100084));
+        CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+        customModelDataComponent.setFloats(List.of(100084f));
+        meta.setCustomModelDataComponent(customModelDataComponent);
         item.setItemMeta(meta);
         assert (display.getEquipment() != null);
         display.getEquipment().setHelmet(item);
@@ -92,7 +96,7 @@ public class BossLootManager {
                 Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)Aurum.getPlugin(), () -> ExperienceManager.addXP(player, ExperienceManager.xpToNextLevel(level), true), 14L);
             }
         } else {
-            player.sendMessage(ChatColor.GRAY + "You have already opened this chest...");
+            player.sendMessage(Component.text("You have already opened this chest...", NamedTextColor.GRAY));
         }
     }
 

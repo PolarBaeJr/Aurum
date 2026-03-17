@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Particle
  *  org.bukkit.Sound
@@ -22,8 +21,9 @@ import goldenshadow.aurum.items.ItemHelper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -50,7 +50,7 @@ public class PickupInteractionHandler {
             }
             assert (value != null);
             if (value.contains(player.getName())) {
-                player.sendMessage(ChatColor.GRAY + "This item can only be picked up once...");
+                player.sendMessage(Component.text("This item can only be picked up once...", NamedTextColor.GRAY));
             } else {
                 PickupInteractionHandler.giveItem(player, interaction.getEquipment().getHelmet());
                 value = value.equals("") ? player.getName() : value + "," + player.getName();
@@ -61,7 +61,9 @@ public class PickupInteractionHandler {
         } else if (interaction.getScoreboardTags().contains("aurum_pickup_interaction:timed_use")) {
             Integer i;
             if (itemCooldown.containsKey(player.getUniqueId()) && itemCooldown.get(player.getUniqueId()).containsKey(interaction.getUniqueId()) && itemCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) > System.currentTimeMillis()) {
-                player.sendMessage(ChatColor.GRAY + "Wait " + itemHelper.parseCurrentMillis(itemCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) - System.currentTimeMillis()) + " before picking up this item again.");
+                player.sendMessage(Component.text("Wait ", NamedTextColor.GRAY)
+                    .append(Component.text(itemHelper.parseCurrentMillis(itemCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) - System.currentTimeMillis()), NamedTextColor.GRAY))
+                    .append(Component.text(" before picking up this item again.", NamedTextColor.GRAY)));
                 return;
             }
             Map<UUID, Long> inner = new HashMap<>();
@@ -86,7 +88,7 @@ public class PickupInteractionHandler {
 
     private static void giveItem(Player player, ItemStack itemStack) {
         if (player.getInventory().firstEmpty() == -1) {
-            player.sendMessage(ChatColor.GRAY + "Your inventory is full...");
+            player.sendMessage(Component.text("Your inventory is full...", NamedTextColor.GRAY));
         } else {
             player.getInventory().addItem(new ItemStack[]{itemStack});
             player.playSound((Entity)player, Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.0f);

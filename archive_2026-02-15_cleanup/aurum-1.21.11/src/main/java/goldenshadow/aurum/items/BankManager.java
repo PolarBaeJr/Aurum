@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import goldenshadow.aurum.Aurum;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,7 +74,7 @@ public class BankManager {
             if (event.getHand() == EquipmentSlot.HAND && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && event.getClickedBlock().getType().equals((Object)Material.ENDER_CHEST)) {
                 event.setCancelled(true);
                 ArrayList<ItemStack> bankItems = bankData.containsKey(player.getUniqueId()) ? BankManager.retrieveItems(player) : (player.getPersistentDataContainer().has(new NamespacedKey((Plugin)Aurum.getPlugin(), "bankItems"), PersistentDataType.STRING) ? BankManager.retrieveItemsFromNBT(player) : BankManager.retrieveItems(player));
-                Inventory bank = Bukkit.createInventory((InventoryHolder)player, (int)54, (String)(player.getName() + "'s Bank"));
+                Inventory bank = Bukkit.createInventory((InventoryHolder)player, (int)54, Component.text(player.getName() + "'s Bank"));
                 if (bankItems.size() > 0) {
                     for (int i = 0; i < bank.getSize(); ++i) {
                         bank.setItem(i, bankItems.get(i));
@@ -85,7 +87,7 @@ public class BankManager {
 
     public static void closed(InventoryCloseEvent event) {
         Player player = (Player)event.getPlayer();
-        if (event.getView().getTitle().equals(player.getName() + "'s Bank")) {
+        if (PlainTextComponentSerializer.plainText().serialize(event.getView().title()).equals(player.getName() + "'s Bank")) {
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
             Arrays.stream(event.getInventory().getContents()).forEach(item -> items.add(Objects.requireNonNullElseGet(item, () -> new ItemStack(Material.AIR))));
             BankManager.storeItems(items, player);

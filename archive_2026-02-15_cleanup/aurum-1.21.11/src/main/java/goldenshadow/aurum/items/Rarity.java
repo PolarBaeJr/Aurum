@@ -1,40 +1,38 @@
 /*
  * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  org.bukkit.ChatColor
  */
 package goldenshadow.aurum.items;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public enum Rarity {
-    COMMON(ChatColor.DARK_AQUA + "Common Item"),
-    RARE(ChatColor.AQUA + "Rare Item"),
-    EPIC(ChatColor.LIGHT_PURPLE + "Epic Item"),
-    LEGENDARY(ChatColor.RED + "Legendary Item"),
-    ARTIFACT(ChatColor.GOLD + "Artifact"),
-    ELDRITCH(ChatColor.GREEN + "Eldritch Artifact");
+    COMMON(Component.text("Common Item", NamedTextColor.DARK_AQUA)),
+    RARE(Component.text("Rare Item", NamedTextColor.AQUA)),
+    EPIC(Component.text("Epic Item", NamedTextColor.LIGHT_PURPLE)),
+    LEGENDARY(Component.text("Legendary Item", NamedTextColor.RED)),
+    ARTIFACT(Component.text("Artifact", NamedTextColor.GOLD)),
+    ELDRITCH(Component.text("Eldritch Artifact", NamedTextColor.GREEN));
 
-    private final String name;
+    private final Component name;
 
-    private Rarity(String name) {
+    private Rarity(Component name) {
         this.name = name;
     }
 
-    public String getName() {
+    public Component getName() {
         return this.name;
     }
 
-    public static ChatColor getChatColor(Rarity rarity) {
+    public static NamedTextColor getTextColor(Rarity rarity) {
         return switch (rarity) {
             default -> throw new IncompatibleClassChangeError();
-            case COMMON -> ChatColor.DARK_AQUA;
-            case RARE -> ChatColor.AQUA;
-            case EPIC -> ChatColor.LIGHT_PURPLE;
-            case LEGENDARY -> ChatColor.RED;
-            case ARTIFACT -> ChatColor.GOLD;
-            case ELDRITCH -> ChatColor.GREEN;
+            case COMMON -> NamedTextColor.DARK_AQUA;
+            case RARE -> NamedTextColor.AQUA;
+            case EPIC -> NamedTextColor.LIGHT_PURPLE;
+            case LEGENDARY -> NamedTextColor.RED;
+            case ARTIFACT -> NamedTextColor.GOLD;
+            case ELDRITCH -> NamedTextColor.GREEN;
         };
     }
 

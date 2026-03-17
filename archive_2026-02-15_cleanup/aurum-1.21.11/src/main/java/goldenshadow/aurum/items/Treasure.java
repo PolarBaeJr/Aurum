@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Material
  *  org.bukkit.Particle
  *  org.bukkit.Sound
@@ -30,8 +29,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -53,7 +54,7 @@ public class Treasure {
     }
 
     public static Inventory small_treasure(boolean gold_pact, boolean group, int level, Player player) {
-        Inventory inventory = Bukkit.createInventory(null, (int)27, (String)"Small Treasure Hoard");
+        Inventory inventory = Bukkit.createInventory(null, 27, Component.text("Small Treasure Hoard"));
         for (int i = 0; i < inventory.getSize(); ++i) {
             if (gold_pact) {
                 if (ThreadLocalRandom.current().nextInt(0, 3) != 0) continue;
@@ -67,7 +68,7 @@ public class Treasure {
     }
 
     public static Inventory medium_treasure(boolean gold_pact, boolean group, int level, Player player) {
-        Inventory inventory = Bukkit.createInventory(null, (int)27, (String)"Medium Treasure Hoard");
+        Inventory inventory = Bukkit.createInventory(null, 27, Component.text("Medium Treasure Hoard"));
         for (int i = 0; i < inventory.getSize(); ++i) {
             if (gold_pact) {
                 if (ThreadLocalRandom.current().nextInt(0, 100) > 50) continue;
@@ -81,7 +82,7 @@ public class Treasure {
     }
 
     public static Inventory large_treasure(boolean gold_pact, boolean group, int level, Player player) {
-        Inventory inventory = Bukkit.createInventory(null, (int)27, (String)"Large Treasure Hoard");
+        Inventory inventory = Bukkit.createInventory(null, 27, Component.text("Large Treasure Hoard"));
         for (int i = 0; i < inventory.getSize(); ++i) {
             if (gold_pact) {
                 if (ThreadLocalRandom.current().nextInt(0, 100) > 70) continue;
@@ -106,99 +107,99 @@ public class Treasure {
                 ItemStack itemStack = new ItemStack(Material.COD);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Cod");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Cod", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 60) {
                 ItemStack itemStack = new ItemStack(Material.SALMON);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Salmon");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Salmon", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 80) {
                 ItemStack itemStack = new ItemStack(Material.TROPICAL_FISH);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Clownfish");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Clownfish", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 82) {
                 ItemStack itemStack = new ItemStack(Material.BUNDLE);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.AQUA + String.valueOf(ChatColor.BOLD) + "Bundle");
-                lore.add("");
-                lore.add(ChatColor.AQUA + "Rare Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Bundle", NamedTextColor.AQUA).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Rare Item", NamedTextColor.AQUA));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 84) {
                 ItemStack itemStack = new ItemStack(Material.PRISMARINE_CRYSTALS);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Ocean Crystal");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Ocean Crystal", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 86) {
                 ItemStack itemStack = new ItemStack(Material.NAUTILUS_SHELL);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Seashell");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Seashell", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 90) {
                 ItemStack itemStack = new ItemStack(Material.BOOK);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Wet Book");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Wet Book", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else if (roll <= 95) {
                 ItemStack itemStack = new ItemStack(Material.BOWL);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Driftwood Bowl");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Driftwood Bowl", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             } else {
                 ItemStack itemStack = new ItemStack(Material.BONE);
                 ItemMeta meta = itemStack.getItemMeta();
                 assert (meta != null);
-                List<String> lore = new ArrayList<>();
-                meta.setDisplayName(ChatColor.GRAY + String.valueOf(ChatColor.BOLD) + "Fish Bone");
-                lore.add("");
-                lore.add(ChatColor.GRAY + "Junk Item");
-                meta.setLore(lore);
+                List<Component> lore = new ArrayList<>();
+                meta.displayName(Component.text("Fish Bone", NamedTextColor.GRAY).decorate(TextDecoration.BOLD));
+                lore.add(Component.empty());
+                lore.add(Component.text("Junk Item", NamedTextColor.GRAY));
+                meta.lore(lore);
                 itemStack.setItemMeta(meta);
                 item.setItemStack(itemStack);
             }
@@ -207,7 +208,7 @@ public class Treasure {
 
     public static void chestOpen(Slime chest, Player player) {
         if (chestCooldowns.containsKey(player.getUniqueId()) && chestCooldowns.get(player.getUniqueId()).containsKey(chest.getUniqueId()) && chestCooldowns.get(player.getUniqueId()).get(chest.getUniqueId()) > System.currentTimeMillis()) {
-            player.sendMessage(ChatColor.GRAY + "This chest is still on cooldown! Wait " + Treasure.parseCurrentMillis(chestCooldowns.get(player.getUniqueId()).get(chest.getUniqueId()) - System.currentTimeMillis()) + ".");
+            player.sendMessage(Component.text("This chest is still on cooldown! Wait " + Treasure.parseCurrentMillis(chestCooldowns.get(player.getUniqueId()).get(chest.getUniqueId()) - System.currentTimeMillis()) + ".", NamedTextColor.GRAY));
             return;
         }
         if (chest.getScoreboardTags().contains("aurum_chest_small")) {

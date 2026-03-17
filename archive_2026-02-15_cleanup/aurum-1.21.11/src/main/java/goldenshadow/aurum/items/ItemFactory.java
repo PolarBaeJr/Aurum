@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
  *  org.bukkit.attribute.Attribute
@@ -29,7 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -38,6 +39,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
@@ -77,33 +79,33 @@ public class ItemFactory {
         int customModelCode = this.getCustomModelCode(rarity);
         meta.getPersistentDataContainer().set(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER, level);
         meta.setCustomModelData(Integer.valueOf(customModelCode));
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         ItemType itemType = this.getItemType(customModelCode, rarity);
-        meta.setDisplayName(this.getName(itemType, rarity));
+        meta.displayName(this.getNameComponent(itemType, rarity));
         int attackDamage = this.itemCreationHelper.getBaseDamage(rarity, itemType, level);
         meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, new AttributeModifier(NamespacedKey.fromString("aurum:generic_attack_damage"), (double)attackDamage + this.itemCreationHelper.getAttributeSum(Attribute.ATTACK_DAMAGE, meta), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
-        lore.add(" ");
-        lore.add(ChatColor.GRAY + "Base Attack Damage: " + ChatColor.WHITE + attackDamage);
-        lore.add(ChatColor.GRAY + "Minimum Level Req: " + ChatColor.WHITE + level);
-        lore.add(" ");
+        lore.add(Component.empty());
+        lore.add(Component.text("Base Attack Damage: ", NamedTextColor.GRAY).append(Component.text(String.valueOf(attackDamage), NamedTextColor.WHITE)));
+        lore.add(Component.text("Minimum Level Req: ", NamedTextColor.GRAY).append(Component.text(String.valueOf(level), NamedTextColor.WHITE)));
+        lore.add(Component.empty());
         for (int i = 0; i < this.getAttributeAmount(rarity, itemType); ++i) {
             AttributeID attribute = this.itemCreationHelper.getRandomAttribute(meta);
             meta = i < this.getPositiveRollAmount(rarity, itemType) ? this.itemCreationHelper.addAttribute(meta, this.itemCreationHelper.makePositive(this.itemCreationHelper.getRandomRoll(attribute, rarity, itemType, level)), attribute, lore, itemType) : (ThreadLocalRandom.current().nextBoolean() ? this.itemCreationHelper.addAttribute(meta, this.itemCreationHelper.getRandomRoll(attribute, rarity, itemType, level * -1), attribute, lore, itemType) : this.itemCreationHelper.addAttribute(meta, this.itemCreationHelper.getRandomRoll(attribute, rarity, itemType, level), attribute, lore, itemType));
         }
-        lore = meta.getLore();
+        lore = meta.lore();
         if (lore == null) {
-            lore = new ArrayList();
+            lore = new ArrayList<>();
         }
         if (ThreadLocalRandom.current().nextInt(0, 100) < this.getRuneSlotChance(rarity)) {
-            lore.add("");
-            lore.add(ChatColor.DARK_GRAY + "Empty Rune Slot");
+            lore.add(Component.empty());
+            lore.add(Component.text("Empty Rune Slot", NamedTextColor.DARK_GRAY));
             meta = this.itemCreationHelper.addRuneData(meta, Rune.EMPTY);
         }
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.values());
-        lore.add(" ");
+        lore.add(Component.empty());
         lore.add(rarity.getName());
-        meta.setLore(lore);
+        meta.lore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -121,32 +123,32 @@ public class ItemFactory {
         int customModelCode = this.getCustomModelCode(rarity);
         meta.getPersistentDataContainer().set(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER, level);
         meta.setCustomModelData(Integer.valueOf(customModelCode));
-        List<String> lore = new ArrayList<>();
-        meta.setDisplayName(this.getName(itemType, rarity));
+        List<Component> lore = new ArrayList<>();
+        meta.displayName(this.getNameComponent(itemType, rarity));
         int baseHealth = this.itemCreationHelper.getBaseHealth(rarity, itemType, level);
         meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(NamespacedKey.fromString("aurum:health"), (double)baseHealth + this.itemCreationHelper.getAttributeSum(Attribute.MAX_HEALTH, meta), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY));
-        lore.add(" ");
-        lore.add(ChatColor.GRAY + "Base Health Bonus: " + ChatColor.WHITE + baseHealth);
-        lore.add(ChatColor.GRAY + "Minimum Level Req: " + ChatColor.WHITE + level);
-        lore.add(" ");
+        lore.add(Component.empty());
+        lore.add(Component.text("Base Health Bonus: ", NamedTextColor.GRAY).append(Component.text(String.valueOf(baseHealth), NamedTextColor.WHITE)));
+        lore.add(Component.text("Minimum Level Req: ", NamedTextColor.GRAY).append(Component.text(String.valueOf(level), NamedTextColor.WHITE)));
+        lore.add(Component.empty());
         for (int i = 0; i < this.getAttributeAmount(rarity, itemType); ++i) {
             AttributeID attribute = this.itemCreationHelper.getRandomAttribute(meta);
             meta = i < this.getPositiveRollAmount(rarity, itemType) ? this.itemCreationHelper.addAttribute(meta, this.itemCreationHelper.makePositive(this.itemCreationHelper.getRandomRoll(attribute, rarity, itemType, level)), attribute, lore, itemType) : (ThreadLocalRandom.current().nextBoolean() ? this.itemCreationHelper.addAttribute(meta, this.itemCreationHelper.getRandomRoll(attribute, rarity, itemType, level * -1), attribute, lore, itemType) : this.itemCreationHelper.addAttribute(meta, this.itemCreationHelper.getRandomRoll(attribute, rarity, itemType, level), attribute, lore, itemType));
         }
-        lore = meta.getLore();
+        lore = meta.lore();
         if (lore == null) {
-            lore = new ArrayList();
+            lore = new ArrayList<>();
         }
         if (ThreadLocalRandom.current().nextInt(0, 100) < this.getRuneSlotChance(rarity)) {
-            lore.add("");
-            lore.add(ChatColor.DARK_GRAY + "Empty Rune Slot");
+            lore.add(Component.empty());
+            lore.add(Component.text("Empty Rune Slot", NamedTextColor.DARK_GRAY));
             meta = this.itemCreationHelper.addRuneData(meta, Rune.EMPTY);
         }
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.values());
-        lore.add(" ");
+        lore.add(Component.empty());
         lore.add(rarity.getName());
-        meta.setLore(lore);
+        meta.lore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -173,33 +175,33 @@ public class ItemFactory {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         assert (meta != null);
-        meta.setDisplayName(Rarity.getChatColor(rarity) + displayName);
+        meta.displayName(Component.text(displayName, Rarity.getTextColor(rarity)));
         if (!itemType.isArmor()) {
             meta.setCustomModelData(customModelData);
         }
-        List<String> lore = new ArrayList<String>();
-        lore.add(" ");
-        lore.add(ChatColor.GRAY + "Base " + (itemType.isArmor() ? "Health Bonus: " : "Attack Damage: ") + ChatColor.WHITE + baseValue);
-        lore.add(ChatColor.GRAY + "Minimum Level Req: " + ChatColor.WHITE + level);
+        List<Component> lore = new ArrayList<>();
+        lore.add(Component.empty());
+        lore.add(Component.text("Base " + (itemType.isArmor() ? "Health Bonus: " : "Attack Damage: "), NamedTextColor.GRAY).append(Component.text(String.valueOf(baseValue), NamedTextColor.WHITE)));
+        lore.add(Component.text("Minimum Level Req: ", NamedTextColor.GRAY).append(Component.text(String.valueOf(level), NamedTextColor.WHITE)));
         meta.getPersistentDataContainer().set(new NamespacedKey((Plugin)Aurum.getPlugin(), "minLevel"), PersistentDataType.INTEGER, level);
         if (!attributesList.isEmpty()) {
-            lore.add(" ");
+            lore.add(Component.empty());
         }
         for (AttributeID attribute : attributesList.keySet()) {
             meta = this.itemCreationHelper.addAttribute(meta, attributesList.get((Object)attribute), attribute, lore, itemType);
-            lore = meta.getLore();
+            lore = meta.lore();
             assert (lore != null);
         }
-        lore.add(" ");
+        lore.add(Component.empty());
         lore.add(rarity.getName());
         for (Rune rune : runeList) {
             this.itemCreationHelper.addRuneAbility(meta, rune, lore, itemType.isArmor() && material != Material.CARVED_PUMPKIN);
-            lore = meta.getLore();
+            lore = meta.lore();
             assert (lore != null);
         }
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.values());
-        meta.setLore(lore);
+        meta.lore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -289,71 +291,37 @@ public class ItemFactory {
         };
     }
 
-    private String getName(ItemType itemType, Rarity rarity) {
-        String name = "";
+    private Component getNameComponent(ItemType itemType, Rarity rarity) {
+        String prefix = "";
+        NamedTextColor color = Rarity.getTextColor(rarity);
         switch (rarity) {
             case COMMON: {
-                name = ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD);
-                if (itemType.isArmor()) {
-                    name = name + commonArmorNameStart[ThreadLocalRandom.current().nextInt(0, commonArmorNameStart.length)];
-                    break;
-                }
-                name = name + commonWeaponNamesStart[ThreadLocalRandom.current().nextInt(0, commonWeaponNamesStart.length)];
+                prefix = itemType.isArmor() ? commonArmorNameStart[ThreadLocalRandom.current().nextInt(0, commonArmorNameStart.length)] : commonWeaponNamesStart[ThreadLocalRandom.current().nextInt(0, commonWeaponNamesStart.length)];
                 break;
             }
             case RARE: {
-                name = ChatColor.AQUA + String.valueOf(ChatColor.BOLD);
-                if (itemType.isArmor()) {
-                    name = name + rareArmorNameStart[ThreadLocalRandom.current().nextInt(0, rareArmorNameStart.length)];
-                    break;
-                }
-                name = name + rareWeaponNameStart[ThreadLocalRandom.current().nextInt(0, rareWeaponNameStart.length)];
+                prefix = itemType.isArmor() ? rareArmorNameStart[ThreadLocalRandom.current().nextInt(0, rareArmorNameStart.length)] : rareWeaponNameStart[ThreadLocalRandom.current().nextInt(0, rareWeaponNameStart.length)];
                 break;
             }
             case EPIC: {
-                name = ChatColor.LIGHT_PURPLE + String.valueOf(ChatColor.BOLD);
-                if (itemType.isArmor()) {
-                    name = name + epicArmorNameStart[ThreadLocalRandom.current().nextInt(0, epicArmorNameStart.length)];
-                    break;
-                }
-                name = name + epicWeaponNameStart[ThreadLocalRandom.current().nextInt(0, epicWeaponNameStart.length)];
+                prefix = itemType.isArmor() ? epicArmorNameStart[ThreadLocalRandom.current().nextInt(0, epicArmorNameStart.length)] : epicWeaponNameStart[ThreadLocalRandom.current().nextInt(0, epicWeaponNameStart.length)];
                 break;
             }
             case LEGENDARY: {
-                name = ChatColor.RED + String.valueOf(ChatColor.BOLD);
-                name = itemType.isArmor() ? name + legendaryArmorNamesStart[ThreadLocalRandom.current().nextInt(0, legendaryArmorNamesStart.length)] : name + legendaryWeaponNamesStart[ThreadLocalRandom.current().nextInt(0, legendaryWeaponNamesStart.length)];
+                prefix = itemType.isArmor() ? legendaryArmorNamesStart[ThreadLocalRandom.current().nextInt(0, legendaryArmorNamesStart.length)] : legendaryWeaponNamesStart[ThreadLocalRandom.current().nextInt(0, legendaryWeaponNamesStart.length)];
+                break;
             }
         }
-        switch (itemType) {
-            case BOOTS: {
-                name = name + bootsNames[ThreadLocalRandom.current().nextInt(0, bootsNames.length)];
-                break;
-            }
-            case LEGGINGS: {
-                name = name + leggingsNames[ThreadLocalRandom.current().nextInt(0, leggingsNames.length)];
-                break;
-            }
-            case CHESTPLATE: {
-                name = name + chestplateNames[ThreadLocalRandom.current().nextInt(0, chestplateNames.length)];
-                break;
-            }
-            case HELMET: {
-                name = name + helmetNames[ThreadLocalRandom.current().nextInt(0, helmetNames.length)];
-                break;
-            }
-            case WAND: {
-                name = name + wandNames[ThreadLocalRandom.current().nextInt(0, wandNames.length)];
-                break;
-            }
-            case SPEAR: {
-                name = name + spearNames[ThreadLocalRandom.current().nextInt(0, spearNames.length)];
-                break;
-            }
-            case SWORD: {
-                name = name + swordNames[ThreadLocalRandom.current().nextInt(0, swordNames.length)];
-            }
-        }
-        return name;
+        String suffix = switch (itemType) {
+            case BOOTS -> bootsNames[ThreadLocalRandom.current().nextInt(0, bootsNames.length)];
+            case LEGGINGS -> leggingsNames[ThreadLocalRandom.current().nextInt(0, leggingsNames.length)];
+            case CHESTPLATE -> chestplateNames[ThreadLocalRandom.current().nextInt(0, chestplateNames.length)];
+            case HELMET -> helmetNames[ThreadLocalRandom.current().nextInt(0, helmetNames.length)];
+            case WAND -> wandNames[ThreadLocalRandom.current().nextInt(0, wandNames.length)];
+            case SPEAR -> spearNames[ThreadLocalRandom.current().nextInt(0, spearNames.length)];
+            case SWORD -> swordNames[ThreadLocalRandom.current().nextInt(0, swordNames.length)];
+        };
+        return Component.text(prefix + suffix, color).decorate(TextDecoration.BOLD);
     }
 
     private ItemType getItemType(int cmd, Rarity rarity) {

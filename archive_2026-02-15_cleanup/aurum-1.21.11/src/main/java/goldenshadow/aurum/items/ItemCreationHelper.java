@@ -2,7 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  org.bukkit.ChatColor
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
  *  org.bukkit.attribute.Attribute
@@ -30,7 +29,9 @@ import goldenshadow.aurum.items.flags.RuneKeys;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -650,17 +651,17 @@ public class ItemCreationHelper {
         return 0;
     }
 
-    public ItemMeta addAttribute(ItemMeta meta, int roll, AttributeID attribute, List<String> lore, ItemType itemType) {
+    public ItemMeta addAttribute(ItemMeta meta, int roll, AttributeID attribute, List<Component> lore, ItemType itemType) {
         if (roll < 0) {
             if (attribute == AttributeID.HEALTH || attribute == AttributeID.JUMP_HEIGHT || attribute == AttributeID.ATTACK_SPEED) {
-                lore.add(ChatColor.RED + String.valueOf(roll) + ChatColor.GRAY + " " + attribute.getName());
+                lore.add(Component.text(String.valueOf(roll), NamedTextColor.RED).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
             } else {
-                lore.add(ChatColor.RED + String.valueOf(roll) + "%" + ChatColor.GRAY + " " + attribute.getName());
+                lore.add(Component.text(String.valueOf(roll) + "%", NamedTextColor.RED).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
             }
         } else if (attribute == AttributeID.HEALTH || attribute == AttributeID.JUMP_HEIGHT || attribute == AttributeID.ATTACK_SPEED) {
-            lore.add(ChatColor.GREEN + "+" + roll + ChatColor.GRAY + " " + attribute.getName());
+            lore.add(Component.text("+" + roll, NamedTextColor.GREEN).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
         } else {
-            lore.add(ChatColor.GREEN + "+" + roll + "%" + ChatColor.GRAY + " " + attribute.getName());
+            lore.add(Component.text("+" + roll + "%", NamedTextColor.GREEN).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
         }
         if (attribute == AttributeID.HEALTH) {
             meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(NamespacedKey.fromString("aurum:generic_max_health"), (double)roll + this.getAttributeSum(Attribute.MAX_HEALTH, meta), AttributeModifier.Operation.ADD_NUMBER, this.parseItemType(itemType)));
@@ -669,21 +670,21 @@ public class ItemCreationHelper {
             meta.addAttributeModifier(Attribute.MOVEMENT_SPEED, new AttributeModifier(NamespacedKey.fromString("aurum:generic_movement_speed"), 0.1 * amount, AttributeModifier.Operation.ADD_NUMBER, this.parseItemType(itemType)));
         }
         meta = this.addAttributeData(meta, attribute, roll);
-        meta.setLore(lore);
+        meta.lore(lore);
         return meta;
     }
 
-    public ItemMeta insertAttribute(ItemMeta meta, int roll, AttributeID attribute, List<String> lore, Material material) {
+    public ItemMeta insertAttribute(ItemMeta meta, int roll, AttributeID attribute, List<Component> lore, Material material) {
         if (roll < 0) {
             if (attribute == AttributeID.HEALTH || attribute == AttributeID.JUMP_HEIGHT || attribute == AttributeID.ATTACK_SPEED) {
-                lore.add(4, ChatColor.RED + String.valueOf(roll) + ChatColor.GRAY + " " + attribute.getName());
+                lore.add(4, Component.text(String.valueOf(roll), NamedTextColor.RED).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
             } else {
-                lore.add(4, ChatColor.RED + String.valueOf(roll) + "%" + ChatColor.GRAY + " " + attribute.getName());
+                lore.add(4, Component.text(String.valueOf(roll) + "%", NamedTextColor.RED).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
             }
         } else if (attribute == AttributeID.HEALTH || attribute == AttributeID.JUMP_HEIGHT || attribute == AttributeID.ATTACK_SPEED) {
-            lore.add(4, ChatColor.GREEN + "+" + roll + ChatColor.GRAY + " " + attribute.getName());
+            lore.add(4, Component.text("+" + roll, NamedTextColor.GREEN).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
         } else {
-            lore.add(4, ChatColor.GREEN + "+" + roll + "%" + ChatColor.GRAY + " " + attribute.getName());
+            lore.add(4, Component.text("+" + roll + "%", NamedTextColor.GREEN).append(Component.text(" " + attribute.getName(), NamedTextColor.GRAY)));
         }
         if (attribute == AttributeID.HEALTH) {
             meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(NamespacedKey.fromString("aurum:generic_max_health"), (double)roll + this.getAttributeSum(Attribute.MAX_HEALTH, meta), AttributeModifier.Operation.ADD_NUMBER, this.parseMaterial(material)));
@@ -692,257 +693,257 @@ public class ItemCreationHelper {
             meta.addAttributeModifier(Attribute.MOVEMENT_SPEED, new AttributeModifier(NamespacedKey.fromString("aurum:generic_movement_speed"), 0.1 * amount, AttributeModifier.Operation.ADD_NUMBER, this.parseMaterial(material)));
         }
         meta = this.addAttributeData(meta, attribute, roll);
-        meta.setLore(lore);
+        meta.lore(lore);
         return meta;
     }
 
-    public ItemMeta addRuneAbility(ItemMeta meta, Rune rune, List<String> lore, boolean isArmor) {
+    public ItemMeta addRuneAbility(ItemMeta meta, Rune rune, List<Component> lore, boolean isArmor) {
         if (rune == Rune.CHARGE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Charge");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to charge through the air.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 2 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Charge", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to charge through the air.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 2 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.BLOOD_RUSH) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Blood Rush");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to enter blood rush. While active,");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "every time you take damage, your attack damage is");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "increased to a max of 300% if at 1 HP. You cannot heal");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "while active. Right click again to exit.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 30 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Blood Rush", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to enter blood rush. While active,", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("every time you take damage, your attack damage is", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("increased to a max of 300% if at 1 HP. You cannot heal", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("while active. Right click again to exit.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 30 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.FIREBALL) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Fireball");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to shoot a fireball towards your enemies.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 10 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 300% of Main Attack Damage");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Fireball", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to shoot a fireball towards your enemies.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 10 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 300% of Main Attack Damage", NamedTextColor.AQUA));
         }
         if (rune == Rune.HEAL) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Heal");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Hold right click to heal yourself slowly.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Effect: 1.5 HP per second");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Heal", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Hold right click to heal yourself slowly.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Effect: 1.5 HP per second", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.SMITE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Smite");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to activate. For the next 5 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "every time you attack an enemy you will cause");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "a lightning bolt to strike your target.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 30 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 150% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Smite", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to activate. For the next 5 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("every time you attack an enemy you will cause", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("a lightning bolt to strike your target.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 30 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 150% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.WIND_SLASH) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Wind Slash");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to attack your enemies with");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "the speed of wind.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 5 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 140% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Wind Slash", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to attack your enemies with", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("the speed of wind.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 5 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 140% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.RESURGENCE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Resurgence");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "When you take lethal damage, your life will");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "be spared and you will regain some of your health.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 10 minutes");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Resurgence", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("When you take lethal damage, your life will", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("be spared and you will regain some of your health.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 10 minutes", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.SHOCK_WAVE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Shock Wave");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to push nearby enemies away from you.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 15 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Shock Wave", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to push nearby enemies away from you.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 15 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.DISTORTION) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Distortion");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to pull nearby enemies towards you.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 15 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Distortion", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to pull nearby enemies towards you.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 15 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.DRAGON_SKIN) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Dragon Skin");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain immunity to fire.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Dragon Skin", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain immunity to fire.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.FISH_LUNG) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Fish Lung");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain immunity to drowning and speed underwater.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Fish Lung", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain immunity to drowning and speed underwater.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.FALLING_STAR) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Falling Star");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to cause a meteor to strike where you are aiming.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 20 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 200% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Falling Star", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to cause a meteor to strike where you are aiming.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 20 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 200% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.DISPLACEMENT) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Displacement");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to activate. For the next 10 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "every time you attack an enemy you will cause");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "you to switch places with your target.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 10 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Displacement", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to activate. For the next 10 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("every time you attack an enemy you will cause", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("you to switch places with your target.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 10 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.RIFT_STEP) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Rift Step");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to charge through the air, but");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "doing this will cause you to lose 2 HP.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Rift Step", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to charge through the air, but", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("doing this will cause you to lose 2 HP.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.SACRIFICE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Sacrifice");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Every time you take damage, allies near you will");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "be healed by 50% of the damage taken. If there");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "are multiple allies near you, the amount healed");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "will be split.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Sacrifice", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Every time you take damage, allies near you will", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("be healed by 50% of the damage taken. If there", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("are multiple allies near you, the amount healed", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("will be split.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.TIME_LOCK) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Time Lock");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to completely freeze all enemies");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "around you for 5 seconds.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 20 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Time Lock", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to completely freeze all enemies", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("around you for 5 seconds.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 20 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.GOLD_PACT) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Gold Pact");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Increases the amount of loot you get from");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "treasure hoards but all damage you receive");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "is doubled.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Gold Pact", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Increases the amount of loot you get from", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("treasure hoards but all damage you receive", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("is doubled.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.LEECH_FOOT) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Leach Foot");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to activate. Until you right click");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "again, your walk speed will be increased by");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "a very large amount but you will drain 4 HP");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "every second.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Leach Foot", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to activate. Until you right click", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("again, your walk speed will be increased by", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("a very large amount but you will drain 4 HP", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("every second.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.SWIFTNESS) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Swiftness");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain a speed boost.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Swiftness", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain a speed boost.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.ARCANE_SHIELD) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Arcane Shield");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain an invisible shield that absorbs");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "20% of damage taken.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Arcane Shield", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain an invisible shield that absorbs", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("20% of damage taken.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.REGENERATION) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Regeneration");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain 1 HP every second.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Regeneration", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain 1 HP every second.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.GRACE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Grace");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain the ability to glide through the air.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Grace", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain the ability to glide through the air.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.VITALITY) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Vitality");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Gain an extra 8 HP.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Vitality", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Gain an extra 8 HP.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.RESTORATION) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Restoration");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "If your health is below half, all health");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "you regain will be doubled.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Passive");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Restoration", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("If your health is below half, all health", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("you regain will be doubled.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Passive", NamedTextColor.AQUA));
         }
         if (rune == Rune.AMOGUS) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Amogus");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Amogus", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
         }
         if (rune == Rune.ARCANE_RAY) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Arcane Ray");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to channel arcane energy into a ray.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 20 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 250% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Arcane Ray", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to channel arcane energy into a ray.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 20 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 250% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.GROUND_SLAM) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Ground Slam");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to launch yourself into the air and slam");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "back into the ground, damaging all nearby enemies.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 8 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 50% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Ground Slam", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to launch yourself into the air and slam", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("back into the ground, damaging all nearby enemies.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 8 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 50% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.PIROUETTE) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Pirouette");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to damage all nearby enemies with a");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "deadly spin attack.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 5 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 120% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Pirouette", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to damage all nearby enemies with a", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("deadly spin attack.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 5 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 120% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.RITUAL) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Ritual");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click to create a healing circle on");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "the ground for 20 seconds.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 60 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Effect: 2 HP per second");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Ritual", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click to create a healing circle on", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("the ground for 20 seconds.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 60 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Effect: 2 HP per second", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.FROZEN_SPARK) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Frozen Spark");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click shoot a ray of ice. The closer you");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "are the the enemy, the more damage you deal.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 10 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Damage: 70% to 280% of Main Attack Damage");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Frozen Spark", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click shoot a ray of ice. The closer you", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("are the the enemy, the more damage you deal.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 10 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Damage: 70% to 280% of Main Attack Damage", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.TAUNT) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Taunt");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Right click cause all nearby enemies to");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "to target you.");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Cooldown: 15 seconds");
-            lore.add(lore.size() - 2, ChatColor.AQUA + "Type: Active");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Taunt", NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD));
+            lore.add(lore.size() - 2, Component.text("Right click cause all nearby enemies to", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("to target you.", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Cooldown: 15 seconds", NamedTextColor.AQUA));
+            lore.add(lore.size() - 2, Component.text("Type: Active", NamedTextColor.AQUA));
         }
         if (rune == Rune.EMPTY) {
-            lore.add(lore.size() - 2, " ");
-            lore.add(lore.size() - 2, ChatColor.DARK_GRAY + "Empty Rune Slot");
+            lore.add(lore.size() - 2, Component.empty());
+            lore.add(lore.size() - 2, Component.text("Empty Rune Slot", NamedTextColor.DARK_GRAY));
         }
         meta = this.addRuneData(meta, rune);
         if (isArmor && rune != Rune.EMPTY) {
             ArmorMeta armorMeta = (ArmorMeta)meta;
             armorMeta.setTrim(this.getRandomTrim(this.getRarity(lore.get(lore.size() - 1)), rune));
         }
-        meta.setLore(lore);
+        meta.lore(lore);
         return meta;
     }
 
@@ -974,20 +975,20 @@ public class ItemCreationHelper {
         return new ArmorTrim(trimMaterial, trimPattern);
     }
 
-    private Rarity getRarity(String s) {
-        if (s.equals(Rarity.RARE.getName())) {
+    private Rarity getRarity(Component c) {
+        if (c.equals(Rarity.RARE.getName())) {
             return Rarity.RARE;
         }
-        if (s.equals(Rarity.EPIC.getName())) {
+        if (c.equals(Rarity.EPIC.getName())) {
             return Rarity.EPIC;
         }
-        if (s.equals(Rarity.LEGENDARY.getName())) {
+        if (c.equals(Rarity.LEGENDARY.getName())) {
             return Rarity.LEGENDARY;
         }
-        if (s.equals(Rarity.ARTIFACT.getName())) {
+        if (c.equals(Rarity.ARTIFACT.getName())) {
             return Rarity.ARTIFACT;
         }
-        if (s.equals(Rarity.ELDRITCH.getName())) {
+        if (c.equals(Rarity.ELDRITCH.getName())) {
             return Rarity.ELDRITCH;
         }
         return Rarity.COMMON;
@@ -1019,7 +1020,7 @@ public class ItemCreationHelper {
         return EquipmentSlotGroup.MAINHAND;
     }
 
-    public ItemMeta addConsumableEffect(ItemMeta meta, List<String> lore, String type, String displayName, int strength, int duration) {
+    public ItemMeta addConsumableEffect(ItemMeta meta, List<Component> lore, String type, String displayName, int strength, int duration) {
         NamespacedKey key = new NamespacedKey((Plugin)Aurum.getPlugin(), "consumableEffect");
         PersistentDataContainer container = meta.getPersistentDataContainer();
         String string = "";
@@ -1031,15 +1032,15 @@ public class ItemCreationHelper {
         string = string.trim();
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, string);
         if (type.equalsIgnoreCase("precise_health")) {
-            lore.add(4, ChatColor.YELLOW + "+" + strength + " Health");
+            lore.add(4, Component.text("+" + strength + " Health", NamedTextColor.YELLOW));
         } else if (type.equalsIgnoreCase("precise_damage")) {
-            lore.add(4, ChatColor.YELLOW + "-" + strength + " Health");
+            lore.add(4, Component.text("-" + strength + " Health", NamedTextColor.YELLOW));
         } else if (strength == 1) {
-            lore.add(4, ChatColor.YELLOW + this.capitalize(displayName) + " for " + duration + " seconds");
+            lore.add(4, Component.text(this.capitalize(displayName) + " for " + duration + " seconds", NamedTextColor.YELLOW));
         } else {
-            lore.add(4, ChatColor.YELLOW + this.capitalize(displayName) + " " + this.integerToRoman(strength) + " for " + duration + " seconds");
+            lore.add(4, Component.text(this.capitalize(displayName) + " " + this.integerToRoman(strength) + " for " + duration + " seconds", NamedTextColor.YELLOW));
         }
-        meta.setLore(lore);
+        meta.lore(lore);
         return meta;
     }
 

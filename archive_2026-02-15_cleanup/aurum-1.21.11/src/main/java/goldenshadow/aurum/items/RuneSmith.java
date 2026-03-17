@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Material
  *  org.bukkit.Sound
  *  org.bukkit.entity.Entity
@@ -25,8 +24,11 @@ import goldenshadow.aurum.other.ExperienceManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -40,13 +42,13 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class RuneSmith {
     public static Inventory createRuneSmithGUI(Player player) {
-        Inventory inv = Bukkit.createInventory((InventoryHolder)player, (int)27, (String)(ChatColor.LIGHT_PURPLE + "       " + ChatColor.MAGIC + "H" + ChatColor.BOLD + ChatColor.DARK_PURPLE + " Rune Smith Table " + ChatColor.RESET + ChatColor.LIGHT_PURPLE + ChatColor.MAGIC + "H"));
+        Inventory inv = Bukkit.createInventory((InventoryHolder)player, 27, Component.text("       ", NamedTextColor.LIGHT_PURPLE).append(Component.text("H", NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.OBFUSCATED)).append(Component.text(" Rune Smith Table ", NamedTextColor.DARK_PURPLE).decorate(TextDecoration.BOLD)).append(Component.text("H", NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.OBFUSCATED)));
         ItemStack item = new ItemStack(Material.GLASS);
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         for (int i = 0; i < 27; ++i) {
             assert (meta != null);
-            meta.setDisplayName(" ");
+            meta.displayName(Component.text(" "));
             if (i == 0 || i == 1 || i == 9 || i == 18 || i == 19) {
                 item.setType(Material.RED_STAINED_GLASS_PANE);
             } else if (i == 7 || i == 8 || i == 17 || i == 25 || i == 26) {
@@ -56,20 +58,20 @@ public class RuneSmith {
             } else if (i == 10 || i == 16) {
                 item.setType(Material.END_CRYSTAL);
                 if (i == 10) {
-                    meta.setDisplayName(ChatColor.RED + String.valueOf(ChatColor.BOLD) + "Cancel");
-                    lore.add(ChatColor.GRAY + "Click here to exit!");
+                    meta.displayName(Component.text("Cancel", NamedTextColor.RED).decorate(TextDecoration.BOLD));
+                    lore.add(Component.text("Click here to exit!", NamedTextColor.GRAY));
                 } else {
-                    meta.setDisplayName(ChatColor.GREEN + String.valueOf(ChatColor.BOLD) + "Apply");
-                    lore.add(ChatColor.GRAY + "Click here to apply runes to item!");
-                    lore.add(ChatColor.GRAY + "Cost: ???");
-                    lore.add(ChatColor.DARK_GRAY + "Runes can not be removed once applied!");
+                    meta.displayName(Component.text("Apply", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+                    lore.add(Component.text("Click here to apply runes to item!", NamedTextColor.GRAY));
+                    lore.add(Component.text("Cost: ???", NamedTextColor.GRAY));
+                    lore.add(Component.text("Runes can not be removed once applied!", NamedTextColor.DARK_GRAY));
                 }
             } else {
                 if (i != 12 && i != 14 && i != 22) continue;
                 item.setType(Material.BARRIER);
-                meta.setDisplayName(ChatColor.DARK_RED + String.valueOf(ChatColor.BOLD) + "Rune slot not available!");
+                meta.displayName(Component.text("Rune slot not available!", NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD));
             }
-            meta.setLore(lore);
+            meta.lore(lore);
             item.setItemMeta(meta);
             inv.setItem(i, item);
             lore.clear();
@@ -93,7 +95,7 @@ public class RuneSmith {
     }
 
     public static boolean isRuneSmithGUI(String s) {
-        return s.equals(ChatColor.LIGHT_PURPLE + "       " + ChatColor.MAGIC + "H" + ChatColor.BOLD + ChatColor.DARK_PURPLE + " Rune Smith Table " + ChatColor.RESET + ChatColor.LIGHT_PURPLE + ChatColor.MAGIC + "H");
+        return s.contains("Rune Smith Table");
     }
 
     public static void invClick(InventoryClickEvent event) {
@@ -269,7 +271,7 @@ public class RuneSmith {
                         player.getOpenInventory().setItem(22, RuneSmith.barrierItem());
                     } else {
                         player.playSound((Entity)player, Sound.ENTITY_CAT_HISS, 1.0f, 1.0f);
-                        player.sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "!" + ChatColor.DARK_PURPLE + "] " + ChatColor.LIGHT_PURPLE + "You don't have enough levels to apply these runes!");
+                        player.sendMessage(Component.text("[", NamedTextColor.DARK_PURPLE).append(Component.text("!", NamedTextColor.LIGHT_PURPLE)).append(Component.text("] ", NamedTextColor.DARK_PURPLE)).append(Component.text("You don't have enough levels to apply these runes!", NamedTextColor.LIGHT_PURPLE)));
                     }
                 }
             }
@@ -290,11 +292,11 @@ public class RuneSmith {
             ItemMeta meta = itemStack.getItemMeta();
             ItemFactory itemFactory = new ItemFactory();
             assert (meta != null);
-            List lore = meta.getLore();
+            List<Component> lore = meta.lore();
             if (rune1 != null && rune1.getItemMeta() != null && !Rune.getRunesOnItem(rune1).isEmpty()) {
                 assert (lore != null);
                 for (i = lore.size() - 1; i > -1; --i) {
-                    if (!((String)lore.get(i)).equalsIgnoreCase(ChatColor.DARK_GRAY + "Empty Rune Slot")) continue;
+                    if (!PlainTextComponentSerializer.plainText().serialize(lore.get(i)).equalsIgnoreCase("Empty Rune Slot")) continue;
                     lore.remove(i);
                     lore.remove(i - 1);
                     runeToAdd = RuneSmith.getRuneAbility(rune1);
@@ -311,7 +313,7 @@ public class RuneSmith {
             if (rune2 != null && rune2.getItemMeta() != null && rune2.getItemMeta().hasEnchants()) {
                 assert (lore != null);
                 for (i = lore.size() - 1; i > -1; --i) {
-                    if (!((String)lore.get(i)).equalsIgnoreCase(ChatColor.DARK_GRAY + "Empty Rune Slot")) continue;
+                    if (!PlainTextComponentSerializer.plainText().serialize(lore.get(i)).equalsIgnoreCase("Empty Rune Slot")) continue;
                     lore.remove(i);
                     lore.remove(i - 1);
                     runeToAdd = RuneSmith.getRuneAbility(rune2);
@@ -328,7 +330,7 @@ public class RuneSmith {
             if (rune3 != null && rune3.getItemMeta() != null && rune3.getItemMeta().hasEnchants()) {
                 assert (lore != null);
                 for (i = lore.size() - 1; i > -1; --i) {
-                    if (!((String)lore.get(i)).equalsIgnoreCase(ChatColor.DARK_GRAY + "Empty Rune Slot")) continue;
+                    if (!PlainTextComponentSerializer.plainText().serialize(lore.get(i)).equalsIgnoreCase("Empty Rune Slot")) continue;
                     lore.remove(i);
                     lore.remove(i - 1);
                     runeToAdd = RuneSmith.getRuneAbility(rune3);
@@ -342,7 +344,7 @@ public class RuneSmith {
                     break;
                 }
             }
-            meta.setLore(lore);
+            meta.lore(lore);
             itemStack.setItemMeta(meta);
         }
         return itemStack;
@@ -427,15 +429,16 @@ public class RuneSmith {
         assert (item != null);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
-        List lore = meta.getLore();
+        List<Component> lore = meta.lore();
         assert (lore != null);
-        int newCost = lore.contains(ChatColor.GRAY + "Cost: 1 Level") ? 2 : (lore.contains(ChatColor.GRAY + "Cost: 2 Levels") ? 3 : (lore.contains(ChatColor.GRAY + "Cost: 3 Levels") ? 3 : 1));
+        String loreText = PlainTextComponentSerializer.plainText().serialize(lore.get(1));
+        int newCost = loreText.equals("Cost: 1 Level") ? 2 : (loreText.equals("Cost: 2 Levels") ? 3 : (loreText.equals("Cost: 3 Levels") ? 3 : 1));
         if (newCost == 1) {
-            lore.set(1, ChatColor.GRAY + "Cost: " + newCost + " Level");
+            lore.set(1, Component.text("Cost: " + newCost + " Level", NamedTextColor.GRAY));
         } else {
-            lore.set(1, ChatColor.GRAY + "Cost: " + newCost + " Levels");
+            lore.set(1, Component.text("Cost: " + newCost + " Levels", NamedTextColor.GRAY));
         }
-        meta.setLore(lore);
+        meta.lore(lore);
         item.setItemMeta(meta);
         return item;
     }
@@ -445,22 +448,23 @@ public class RuneSmith {
         assert (item != null);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
-        List lore = meta.getLore();
+        List<Component> lore = meta.lore();
         assert (lore != null);
         int newCost = 0;
-        if (lore.contains(ChatColor.GRAY + "Cost: 1 Level")) {
-            lore.set(1, ChatColor.GRAY + "Cost: ???");
-        } else if (lore.contains(ChatColor.GRAY + "Cost: 2 Levels")) {
+        String loreText = PlainTextComponentSerializer.plainText().serialize(lore.get(1));
+        if (loreText.equals("Cost: 1 Level")) {
+            lore.set(1, Component.text("Cost: ???", NamedTextColor.GRAY));
+        } else if (loreText.equals("Cost: 2 Levels")) {
             newCost = 1;
-        } else if (lore.contains(ChatColor.GRAY + "Cost: 3 Levels")) {
+        } else if (loreText.equals("Cost: 3 Levels")) {
             newCost = 2;
         }
         if (newCost == 1) {
-            lore.set(1, ChatColor.GRAY + "Cost: " + newCost + " Level");
+            lore.set(1, Component.text("Cost: " + newCost + " Level", NamedTextColor.GRAY));
         } else if (newCost != 0) {
-            lore.set(1, ChatColor.GRAY + "Cost: " + newCost + " Levels");
+            lore.set(1, Component.text("Cost: " + newCost + " Levels", NamedTextColor.GRAY));
         }
-        meta.setLore(lore);
+        meta.lore(lore);
         item.setItemMeta(meta);
         return item;
     }
@@ -470,10 +474,10 @@ public class RuneSmith {
         assert (item != null);
         ItemMeta meta = item.getItemMeta();
         assert (meta != null);
-        List lore = meta.getLore();
+        List<Component> lore = meta.lore();
         assert (lore != null);
-        lore.set(1, ChatColor.GRAY + "Cost: ???");
-        meta.setLore(lore);
+        lore.set(1, Component.text("Cost: ???", NamedTextColor.GRAY));
+        meta.lore(lore);
         item.setItemMeta(meta);
         return item;
     }
@@ -490,7 +494,7 @@ public class RuneSmith {
         ItemStack itemStack = new ItemStack(Material.BARRIER);
         ItemMeta meta = itemStack.getItemMeta();
         assert (meta != null);
-        meta.setDisplayName(ChatColor.DARK_RED + String.valueOf(ChatColor.BOLD) + "Rune slot not available!");
+        meta.displayName(Component.text("Rune slot not available!", NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD));
         itemStack.setItemMeta(meta);
         return itemStack;
     }

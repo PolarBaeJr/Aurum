@@ -22,6 +22,8 @@ import goldenshadow.aurum.Aurum;
 import goldenshadow.aurum.items.ItemHelper;
 import goldenshadow.aurum.items.flags.Rune;
 import java.util.Objects;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -76,9 +78,9 @@ public class ConsumableHandler {
                     }
                     player.playSound((Entity)player, Sound.ENTITY_PLAYER_BURP, 1.0f, 1.0f);
                     if (uses > 1) {
-                        String name = meta.getDisplayName();
+                        Component name = meta.displayName();
                         name = ConsumableHandler.consumeUse(name, uses - 1);
-                        meta.setDisplayName(name);
+                        meta.displayName(name);
                         container.set(usesKey, PersistentDataType.INTEGER, (uses - 1));
                         item.setItemMeta(meta);
                         player.getInventory().setItemInMainHand(item);
@@ -93,10 +95,12 @@ public class ConsumableHandler {
         }
     }
 
-    private static String consumeUse(String input, int newNumber) {
+    private static Component consumeUse(Component input, int newNumber) {
+        String plainText = PlainTextComponentSerializer.plainText().serialize(input);
         String regex = "\\[(\\d+)/";
         String replacement = "[" + newNumber + "/";
-        return input.replaceFirst(regex, replacement);
+        String updated = plainText.replaceFirst(regex, replacement);
+        return Component.text(updated).color(input.color()).decorations(input.decorations());
     }
 }
 

@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Sound
  *  org.bukkit.entity.Entity
@@ -19,8 +18,9 @@
 package goldenshadow.aurum.items;
 
 import goldenshadow.aurum.Aurum;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -46,11 +46,17 @@ public class ItemLevelHandler {
                 assert (meta != null);
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 if (!container.has(key, PersistentDataType.INTEGER) || (minLevel = (Integer)container.get(key, PersistentDataType.INTEGER)) == null || minLevel <= player.getLevel()) continue;
-                player.sendMessage(ChatColor.RED + "[" + ChatColor.YELLOW + "!" + ChatColor.RED + "] " + ChatColor.DARK_RED + "You're not high enough level to use this!");
+                player.sendMessage(Component.text("[", NamedTextColor.RED)
+                    .append(Component.text("!", NamedTextColor.YELLOW))
+                    .append(Component.text("] ", NamedTextColor.RED))
+                    .append(Component.text("You're not high enough level to use this!", NamedTextColor.DARK_RED)));
                 player.playSound((Entity)player, Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
                 if (player.getInventory().firstEmpty() == -1) {
-                    player.sendMessage("");
-                    player.sendMessage(ChatColor.RED + "[" + ChatColor.YELLOW + "!" + ChatColor.RED + "] " + ChatColor.DARK_RED + "Item was dropped because your inventory was full!");
+                    player.sendMessage(Component.empty());
+                    player.sendMessage(Component.text("[", NamedTextColor.RED)
+                        .append(Component.text("!", NamedTextColor.YELLOW))
+                        .append(Component.text("] ", NamedTextColor.RED))
+                        .append(Component.text("Item was dropped because your inventory was full!", NamedTextColor.DARK_RED)));
                     player.getWorld().dropItem(player.getLocation(), i);
                     i.setAmount(0);
                 }
@@ -72,7 +78,10 @@ public class ItemLevelHandler {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             if (container.has(key, PersistentDataType.INTEGER) && (minLevel = (Integer)container.get(key, PersistentDataType.INTEGER)) != null && minLevel > player.getLevel() && (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "[" + ChatColor.YELLOW + "!" + ChatColor.RED + "] " + ChatColor.DARK_RED + "You're not high enough level to use this!");
+                player.sendMessage(Component.text("[", NamedTextColor.RED)
+                    .append(Component.text("!", NamedTextColor.YELLOW))
+                    .append(Component.text("] ", NamedTextColor.RED))
+                    .append(Component.text("You're not high enough level to use this!", NamedTextColor.DARK_RED)));
                 player.playSound((Entity)player, Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
             }
         }

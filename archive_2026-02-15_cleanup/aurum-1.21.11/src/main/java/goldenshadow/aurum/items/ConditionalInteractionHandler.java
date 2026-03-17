@@ -3,7 +3,6 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Material
  *  org.bukkit.NamespacedKey
  *  org.bukkit.Particle
@@ -22,8 +21,10 @@ import goldenshadow.aurum.items.ItemHelper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -50,7 +51,7 @@ public class ConditionalInteractionHandler {
             }
             assert (value != null);
             if (value.contains(player.getName())) {
-                player.sendMessage(ChatColor.GRAY + "You can only do this once...");
+                player.sendMessage(Component.text("You can only do this once...", NamedTextColor.GRAY));
             } else {
                 ItemStack requiredItem = interaction.getEquipment().getHelmet();
                 assert (requiredItem != null);
@@ -60,7 +61,8 @@ public class ConditionalInteractionHandler {
                     container.set(key, PersistentDataType.STRING, value);
                 } else {
                     assert (requiredItem.getItemMeta() != null);
-                    player.sendMessage(ChatColor.GRAY + "Item required: " + requiredItem.getItemMeta().getDisplayName());
+                    player.sendMessage(Component.text("Item required: ", NamedTextColor.GRAY)
+                        .append(requiredItem.getItemMeta().displayName()));
                 }
             }
         } else if (interaction.getScoreboardTags().contains("aurum_conditional_interaction:unlimited_use")) {
@@ -70,11 +72,14 @@ public class ConditionalInteractionHandler {
                 ConditionalInteractionHandler.triggerEvent(player, interaction.getPersistentDataContainer(), requiredItem.getAmount());
             } else {
                 assert (requiredItem.getItemMeta() != null);
-                player.sendMessage(ChatColor.GRAY + "Item required: " + requiredItem.getItemMeta().getDisplayName());
+                player.sendMessage(Component.text("Item required: ", NamedTextColor.GRAY)
+                    .append(requiredItem.getItemMeta().displayName()));
             }
         } else if (interaction.getScoreboardTags().contains("aurum_conditional_interaction:timed_use")) {
             if (eventCooldown.containsKey(player.getUniqueId()) && eventCooldown.get(player.getUniqueId()).containsKey(interaction.getUniqueId()) && eventCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) > System.currentTimeMillis()) {
-                player.sendMessage(ChatColor.GRAY + "Wait " + itemHelper.parseCurrentMillis(eventCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) - System.currentTimeMillis()) + " before doing this again.");
+                player.sendMessage(Component.text("Wait ", NamedTextColor.GRAY)
+                    .append(Component.text(itemHelper.parseCurrentMillis(eventCooldown.get(player.getUniqueId()).get(interaction.getUniqueId()) - System.currentTimeMillis()), NamedTextColor.GRAY))
+                    .append(Component.text(" before doing this again.", NamedTextColor.GRAY)));
                 return;
             }
             Map<UUID, Long> inner = new HashMap<>();
@@ -95,7 +100,8 @@ public class ConditionalInteractionHandler {
                 eventCooldown.put(player.getUniqueId(), inner);
             } else {
                 assert (requiredItem.getItemMeta() != null);
-                player.sendMessage(ChatColor.GRAY + "Item required: " + requiredItem.getItemMeta().getDisplayName());
+                player.sendMessage(Component.text("Item required: ", NamedTextColor.GRAY)
+                    .append(requiredItem.getItemMeta().displayName()));
             }
         }
     }

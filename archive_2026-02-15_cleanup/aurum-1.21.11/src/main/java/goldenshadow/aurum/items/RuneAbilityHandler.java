@@ -2,12 +2,7 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.md_5.bungee.api.ChatColor
- *  net.md_5.bungee.api.ChatMessageType
- *  net.md_5.bungee.api.chat.BaseComponent
- *  net.md_5.bungee.api.chat.TextComponent
  *  org.bukkit.Bukkit
- *  org.bukkit.ChatColor
  *  org.bukkit.Location
  *  org.bukkit.Material
  *  org.bukkit.Particle
@@ -50,10 +45,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -72,6 +65,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -534,13 +528,15 @@ public class RuneAbilityHandler {
                     return;
                 }
                 resurgenceCooldown.put(player.getUniqueId(), System.currentTimeMillis() + 600000L);
-                player.sendMessage(org.bukkit.ChatColor.DARK_RED + "[" + org.bukkit.ChatColor.RED + "!" + org.bukkit.ChatColor.DARK_RED + "] " + org.bukkit.ChatColor.GRAY + "Resurgence triggered! Will refresh in 10 minutes!");
+                player.sendMessage(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text("Resurgence triggered! Will refresh in 10 minutes!", NamedTextColor.GRAY)));
                 event.setCancelled(true);
                 ItemStack playerItem = player.getInventory().getItemInMainHand();
                 ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
                 ItemMeta meta = totem.getItemMeta();
                 assert (meta != null);
-                meta.setCustomModelData(Integer.valueOf(1));
+                CustomModelDataComponent customModelDataComponent = meta.getCustomModelDataComponent();
+                customModelDataComponent.setFloats(List.of(1f));
+                meta.setCustomModelDataComponent(customModelDataComponent);
                 totem.setItemMeta(meta);
                 player.getInventory().setItemInMainHand(totem);
                 player.damage(player.getHealth() + 10.0);
@@ -655,6 +651,6 @@ public class RuneAbilityHandler {
     }
 
     private static void sendActionBarMessage(Player player, String rawString) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, (BaseComponent)new TextComponent(ChatColor.DARK_RED + "[" + ChatColor.RED + "!" + ChatColor.DARK_RED + "] " + ChatColor.GRAY + rawString + ChatColor.DARK_RED + " [" + ChatColor.RED + "!" + ChatColor.DARK_RED + "]"));
+        player.sendActionBar(Component.text("[", NamedTextColor.DARK_RED).append(Component.text("!", NamedTextColor.RED)).append(Component.text("] ", NamedTextColor.DARK_RED)).append(Component.text(rawString, NamedTextColor.GRAY)).append(Component.text(" [", NamedTextColor.DARK_RED)).append(Component.text("!", NamedTextColor.RED)).append(Component.text("]", NamedTextColor.DARK_RED)));
     }
 }
