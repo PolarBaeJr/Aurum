@@ -70,7 +70,7 @@ extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)plugin, ItemDataManager::loadFromFile, 1L);
         }
         catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Could not load saved json files!");
+            plugin.getLogger().log(Level.WARNING, "Could not load saved json files!", e);
         }
         Objects.requireNonNull(this.getCommand("aurum")).setExecutor((CommandExecutor)new Commands());
         Objects.requireNonNull(this.getCommand("aurum")).setTabCompleter((TabCompleter)new CommandTab());

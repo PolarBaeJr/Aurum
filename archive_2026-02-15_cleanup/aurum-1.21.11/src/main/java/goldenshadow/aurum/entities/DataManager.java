@@ -70,7 +70,7 @@ public class DataManager {
         FileReader locationsReader;
         SpawnLocation[] spawnLocArray;
         RespawnLocation[] respawnLocArray;
-        Gson gson = new GsonBuilder().registerTypeAdapter((Type)((Object)SpawnLocation.class), new SpawnLocationAdapter()).registerTypeAdapter((Type)((Object)RespawnLocation.class), new RespawnLocationAdapter()).create();
+        Gson gson = RegistryTypeAdapters.registerAll(new GsonBuilder()).registerTypeAdapter((Type)((Object)SpawnLocation.class), new SpawnLocationAdapter()).registerTypeAdapter((Type)((Object)RespawnLocation.class), new RespawnLocationAdapter()).create();
         File locationsFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/spawn_locations.json");
         File respawnFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/respawn_locations.json");
         File mobsFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/mobs.json");
@@ -92,7 +92,7 @@ public class DataManager {
 
     public static void saveToFiles() throws IOException {
         DataManager.deleteUnusedLocations();
-        Gson gson = new GsonBuilder().registerTypeAdapter((Type)((Object)SpawnLocation.class), new SpawnLocationAdapter()).registerTypeAdapter((Type)((Object)RespawnLocation.class), new RespawnLocationAdapter()).create();
+        Gson gson = RegistryTypeAdapters.registerAll(new GsonBuilder()).registerTypeAdapter((Type)((Object)SpawnLocation.class), new SpawnLocationAdapter()).registerTypeAdapter((Type)((Object)RespawnLocation.class), new RespawnLocationAdapter()).create();
         File locationsFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/spawn_locations.json");
         File respawnFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/respawn_locations.json");
         File mobsFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/mobs.json");
@@ -121,6 +121,9 @@ public class DataManager {
     }
 
     public static void spawnTick() {
+        if (fast_spawner == null || normal_spawner == null || slow_spawner == null || very_slow_spawner == null) {
+            return;
+        }
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getScoreboardTags().contains("aurum_debug_spawning")) continue;
             p.sendMessage(Component.text("--------------------", NamedTextColor.AQUA));
@@ -260,6 +263,10 @@ public class DataManager {
     }
 
     public static void getIntervalSpawnerInfo(Player player) {
+        if (fast_spawner == null || normal_spawner == null || slow_spawner == null || very_slow_spawner == null) {
+            player.sendMessage(Component.text("Spawners not initialized!", NamedTextColor.RED));
+            return;
+        }
         player.sendMessage(fast_spawner.toComponent());
         player.sendMessage(normal_spawner.toComponent());
         player.sendMessage(slow_spawner.toComponent());
