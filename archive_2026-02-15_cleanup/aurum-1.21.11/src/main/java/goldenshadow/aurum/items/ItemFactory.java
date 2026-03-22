@@ -313,6 +313,8 @@ public class ItemFactory {
                 prefix = itemType.isArmor() ? epicArmorNameStart[ThreadLocalRandom.current().nextInt(0, epicArmorNameStart.length)] : epicWeaponNameStart[ThreadLocalRandom.current().nextInt(0, epicWeaponNameStart.length)];
                 break;
             }
+            case ARTIFACT:
+            case ELDRITCH:
             case LEGENDARY: {
                 prefix = itemType.isArmor() ? legendaryArmorNamesStart[ThreadLocalRandom.current().nextInt(0, legendaryArmorNamesStart.length)] : legendaryWeaponNamesStart[ThreadLocalRandom.current().nextInt(0, legendaryWeaponNamesStart.length)];
                 break;
@@ -473,20 +475,22 @@ public class ItemFactory {
             }
             case Rarity.RARE -> {
                 switch (itemType) {
-                    case HELMET: 
-                    case BOOTS: 
+                    case HELMET:
+                    case BOOTS:
                     case WAND: {
                         yield 1;
                     }
+                    default: break;
                 }
                 yield 0;
             }
             case Rarity.EPIC -> {
                 switch (itemType) {
-                    case HELMET: 
+                    case HELMET:
                     case BOOTS: {
                         yield 2;
                     }
+                    default: break;
                 }
                 yield 1;
             }

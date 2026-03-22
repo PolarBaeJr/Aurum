@@ -580,6 +580,8 @@ public class ItemCreationHelper {
                 health = 0.53 * (double)level + 4.0 + ThreadLocalRandom.current().nextDouble(-0.08, 0.09) * (double)level;
                 break;
             }
+            case ARTIFACT:
+            case ELDRITCH:
             case LEGENDARY: {
                 health = 0.55 * (double)level + 6.0 + ThreadLocalRandom.current().nextDouble(-0.06, 0.07) * (double)level;
             }
@@ -606,6 +608,7 @@ public class ItemCreationHelper {
                     case SWORD: {
                         return (int)(2.1 * (double)level + 10.0 + ThreadLocalRandom.current().nextDouble(-0.2, 0.21) * (double)level);
                     }
+                    default: break;
                 }
             }
             case RARE: {
@@ -619,6 +622,7 @@ public class ItemCreationHelper {
                     case SWORD: {
                         return (int)(2.2 * (double)level + 6.0 + ThreadLocalRandom.current().nextDouble(-0.21, 0.22) * (double)level);
                     }
+                    default: break;
                 }
             }
             case EPIC: {
@@ -632,8 +636,11 @@ public class ItemCreationHelper {
                     case SWORD: {
                         return (int)(2.2 * (double)level + 8.0 + ThreadLocalRandom.current().nextDouble(-0.19, 0.2) * (double)level);
                     }
+                    default: break;
                 }
             }
+            case ARTIFACT:
+            case ELDRITCH:
             case LEGENDARY: {
                 switch (itemType) {
                     case WAND: {
@@ -645,6 +652,7 @@ public class ItemCreationHelper {
                     case SWORD: {
                         return (int)(2.2 * (double)level + 10.0 + ThreadLocalRandom.current().nextDouble(-0.2, 0.21) * (double)level);
                     }
+                    default: break;
                 }
             }
         }
