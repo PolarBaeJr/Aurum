@@ -3,3 +3,16 @@
 .conductor/
 .codex-reviews/
 .codex/
+
+# Gradle
+.gradle/
+build/
+!build/libs/Aurum-*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
